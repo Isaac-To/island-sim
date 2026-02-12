@@ -17,9 +17,9 @@ export default function OngoingActionsPanel({ events, currentTick, world }: Ongo
     return events.filter(e => e.tick >= minTick && e.tick <= currentTick);
   }, [events, currentTick]);
 
-  // Separate chat events from other events
-  const chatEvents = recentEvents.filter(e => e.type === 'communicate');
-  const otherCurrentEvents = recentEvents.filter(e => e.tick === currentTick && e.type !== 'communicate');
+  // Separate chat events (communicate + god_message) from other events
+  const chatEvents = recentEvents.filter(e => e.type === 'communicate' || e.type === 'god_message');
+  const otherCurrentEvents = recentEvents.filter(e => e.tick === currentTick && e.type !== 'communicate' && e.type !== 'god_message');
 
   // Group chat events by tick for display
   const chatsByTick: Record<number, Event[]> = {};
@@ -78,24 +78,45 @@ export default function OngoingActionsPanel({ events, currentTick, world }: Ongo
                 </div>
                 <div className="space-y-2">
                   {chatsByTick[tick].map((event, idx) => {
+                    const isGodMessage = event.type === 'god_message';
                     const sender = world.agents.find(a => a.id === event.agentsInvolved[0]);
+                    const senderName = isGodMessage ? 'GOD' : getAgentName(event.agentsInvolved[0]);
+                    const bgColor = isGodMessage ? 'bg-amber-900/30' : 'bg-blue-900/30';
+                    const avatarBg = isGodMessage ? 'bg-amber-600' : 'bg-blue-700';
+                    const textColor = isGodMessage ? 'text-amber-300' : 'text-blue-300';
+                    
+                    // Truncate message if longer than 200 characters
+                    const message = event.details.message || '';
+                    const isTruncated = message.length > 200;
+                    const displayMessage = isTruncated ? message.substring(0, 200) + '...' : message;
+                    
                     return (
-                      <div key={event.id || idx} className="bg-blue-900/30 p-3 rounded-lg">
+                      <div key={event.id || idx} className={`${bgColor} p-3 rounded-lg`}>
                         <div className="flex items-start gap-2">
-                          <div className="rounded-full bg-blue-700 w-8 h-8 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-                            {getAgentName(event.agentsInvolved[0])[0]}
+                          <div className={`rounded-full ${avatarBg} w-8 h-8 flex items-center justify-center text-sm font-bold text-white flex-shrink-0`}>
+                            {isGodMessage ? '✨' : senderName[0]}
                           </div>
                           <div className="flex-1">
-                            <div className="text-blue-300 text-xs font-semibold mb-1">
-                              {getAgentName(event.agentsInvolved[0])}
-                              {event.agentsInvolved.length > 1 && (
+                            <div className={`${textColor} text-xs font-semibold mb-1`}>
+                              {senderName}
+                              {!isGodMessage && event.agentsInvolved.length > 1 && (
                                 <span className="text-gray-400 font-normal ml-1">
                                   → {event.agentsInvolved.slice(1).map(id => getAgentName(id)).join(', ')}
                                 </span>
                               )}
+                              {isGodMessage && event.agentsInvolved.length > 0 && (
+                                <span className="text-gray-400 font-normal ml-1">
+                                  → {event.agentsInvolved.length === world.agents.filter(a => a.alive).length 
+                                      ? 'All Agents' 
+                                      : event.agentsInvolved.map(id => getAgentName(id)).join(', ')}
+                                </span>
+                              )}
                             </div>
                             <div className="text-white text-sm italic">
-                              "{event.details.message}"
+                              "{displayMessage}"
+                              {isTruncated && (
+                                <span className="text-xs text-gray-400 ml-1">(message truncated)</span>
+                              )}
                             </div>
                           </div>
                         </div>

@@ -111,12 +111,17 @@ export class LLMClient {
       starving: agent.starving,
       pregnant: !!agent.pregnancy,
       location: agent.location,
-      recentMemory: prunedMemory.map(m => ({
-        tick: m.tick,
-        description: m.description,
-        category: m.category || 'other',
-        importance: m.importance || 5,
-      })),
+      recentMemory: prunedMemory.map(m => {
+        // Truncate long memory descriptions to keep context manageable
+        const desc = m.description || '';
+        const truncatedDesc = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
+        return {
+          tick: m.tick,
+          description: truncatedDesc,
+          category: m.category || 'other',
+          importance: m.importance || 5,
+        };
+      }),
       relationships: agent.relationships.slice(0, 10).map(r => ({
         agentId: r.agentId,
         type: r.type,
@@ -126,13 +131,19 @@ export class LLMClient {
       conversationHistory: Object.entries(agent.conversationHistory)
         .map(([otherId, history]) => {
           const otherAgent = world.agents.find(a => a.id === otherId);
+          const otherName = otherId === 'GOD' ? 'GOD' : (otherAgent?.name || otherId);
           return {
-            withAgent: otherAgent?.name || otherId,
-            recentMessages: history.messages.slice(-10).map(m => ({
-              tick: m.tick,
-              sender: m.senderName,
-              message: m.message,
-            })),
+            withAgent: otherName,
+            recentMessages: history.messages.slice(-10).map(m => {
+              // Truncate long messages to keep context manageable
+              const msg = m.message || '';
+              const truncatedMsg = msg.length > 100 ? msg.substring(0, 100) + '...' : msg;
+              return {
+                tick: m.tick,
+                sender: m.senderName,
+                message: truncatedMsg,
+              };
+            }),
           };
         })
         .filter(h => h.recentMessages.length > 0),
