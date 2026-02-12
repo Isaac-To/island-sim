@@ -4,7 +4,7 @@
 // Research-grade, fully documented
 
 import { Agent, World } from './types';
-import { getPersonalityDescription } from './agent';
+import { getPersonalityDescription, getSpatialMemoriesForLLM, observeTiles } from './agent';
 import OpenAI from 'openai';
 import fs from 'fs';
 
@@ -157,6 +157,7 @@ export class LLMClient {
           const bRecent = Math.min(...b.recentMessages.map(m => m.ticksAgo));
           return aRecent - bRecent;
         }),
+      spatialMemory: getSpatialMemoriesForLLM(agent, world.time, 15),
     };
 
     // Build world state summary
@@ -367,6 +368,14 @@ MOVEMENT & VISIBILITY:
 - You can move a limited number of tiles per tick.
 - You can only see and interact with entities within a certain visibility radius of your location.
 - You cannot move into water tiles.
+
+SPATIAL MEMORY:
+- You have a spatial memory that tracks important locations you've discovered (resources, structures, crop fields).
+- When you see tiles with notable resources (3+ wood, 3+ stone, 2+ water, 2+ food), you remember them.
+- Structures and crop fields are automatically remembered when you encounter them.
+- Your spatial memory shows location types, coordinates, estimated resources, and when you last saw them.
+- Use this memory to plan efficient routes to gather resources or tend to crops.
+- Locations are prioritized by importance based on your current needs (e.g., water and food are critical when low).
 
 RELATIONSHIPS & MEMORY:
 - Your relationships with other people matter - nurture positive relationships and be mindful of rivalries.

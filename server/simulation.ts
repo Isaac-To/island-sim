@@ -1,6 +1,6 @@
 
 import { World, Event, ID, Agent } from './types';
-import { tickAgent } from './agent';
+import { tickAgent, observeTiles } from './agent';
 import { handleMove, handleCommunicate, handleGather, handleCreateCropField, handleHarvestCrop, MoveToolCall, CommunicateToolCall, GatherToolCall, CreateCropFieldToolCall, HarvestCropToolCall } from './tools';
 import { handleGiveResource, GiveResourceToolCall } from './tools';
 import { handleCraft, CraftToolCall } from './tools';
@@ -29,6 +29,8 @@ export interface SimulationConfig {
   waterReplenishRate: number; // Water units per rain tick
   treeRegrowthRate: number; // Wood units regenerated per tick per forest tile
   cropRegrowthTime: number; // Ticks required for crop field to regrow after harvest
+  // Spatial memory settings
+  spatialMemoryLimit: number; // Maximum number of locations to remember per resource category (wood, stone, water, food)
 }
 
 /**
@@ -313,6 +315,7 @@ export class Simulation {
           location: { ...agentAfterProcreate.location },
           visibilityRadius: agentAfterProcreate.visibilityRadius,
           conversationHistory: {},
+          spatialMemory: [],
         };
         newWorld.agents.push(child);
         this.logEvent({
@@ -372,11 +375,27 @@ export class Simulation {
    * Process a single agent with LLM decision-making
    */
   private async processSingleAgentWithLLM(agent: Agent) {
+    // Update spatial memory by observing visible tiles
+    const visibleTiles = this.world.map
+      .flat()
+      .filter(tile =>
+        Math.abs(tile.x - agent.location.x) <= agent.visibilityRadius &&
+        Math.abs(tile.y - agent.location.y) <= agent.visibilityRadius
+      );
+
+    const agentWithUpdatedMemory = observeTiles(agent, visibleTiles, this.world.time, this.config.spatialMemoryLimit);
+
+    // Update the agent in the world with the new spatial memory
+    const agentIndex = this.world.agents.findIndex(a => a.id === agent.id);
+    if (agentIndex >= 0) {
+      this.world.agents[agentIndex] = agentWithUpdatedMemory;
+    }
+
     // Get tool schemas based on agent status
     const toolSchemas = getToolSchemas(agent.status);
 
     // Get tool calls from LLM
-    let response = await this.llmClient!.getToolCalls(agent, this.world, toolSchemas);
+    let response = await this.llmClient!.getToolCalls(agentWithUpdatedMemory, this.world, toolSchemas);
     let attempts = 1;
     const maxAttempts = 10;
     while (response.toolCalls.length === 0 && attempts < maxAttempts) {
@@ -590,7 +609,23 @@ export class Simulation {
    */
   private processAgentsWithFallback(agents: Agent[]) {
     for (const agent of agents) {
-      this.executeFallbackAction(agent);
+      // Update spatial memory by observing visible tiles
+      const visibleTiles = this.world.map
+        .flat()
+        .filter(tile =>
+          Math.abs(tile.x - agent.location.x) <= agent.visibilityRadius &&
+          Math.abs(tile.y - agent.location.y) <= agent.visibilityRadius
+        );
+
+      const agentWithUpdatedMemory = observeTiles(agent, visibleTiles, this.world.time, this.config.spatialMemoryLimit);
+
+      // Update the agent in the world with the new spatial memory
+      const agentIndex = this.world.agents.findIndex(a => a.id === agent.id);
+      if (agentIndex >= 0) {
+        this.world.agents[agentIndex] = agentWithUpdatedMemory;
+      }
+
+      this.executeFallbackAction(agentWithUpdatedMemory);
     }
   }
 

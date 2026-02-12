@@ -35,5 +35,6 @@ export function loadConfig(): SimulationConfig {
     waterReplenishRate: envOverride('WATER_REPLENISH_RATE', config.waterReplenishRate ?? 1),
     treeRegrowthRate: envOverride('TREE_REGROWTH_RATE', config.treeRegrowthRate ?? 0.01),
     cropRegrowthTime: envOverride('CROP_REGROWTH_TIME', config.cropRegrowthTime ?? 48),
+    spatialMemoryLimit: envOverride('SPATIAL_MEMORY_LIMIT', config.spatialMemoryLimit ?? 10),
   };
 }

@@ -119,6 +119,7 @@ const agents: Agent[] = agentNames.slice(0, selectedAgentCount).map((info, index
     location,
     visibilityRadius: config.visibilityRadius,
     conversationHistory: {},
+    spatialMemory: [],
   };
 });
 

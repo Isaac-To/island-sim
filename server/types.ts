@@ -59,6 +59,42 @@ export interface MemoryEntry {
 }
 
 /**
+ * Location importance categories for spatial memory
+ */
+export type LocationImportance = 'critical' | 'high' | 'medium' | 'low';
+
+/**
+ * Types of locations agents can remember
+ */
+export type LocationType =
+  | 'resource_wood'
+  | 'resource_stone'
+  | 'resource_water'
+  | 'resource_food'
+  | 'crop_field'
+  | 'structure_shelter'
+  | 'structure_fence'
+  | 'structure_workbench'
+  | 'structure_storage'
+  | 'drop_site'
+  | 'dangerous_area';
+
+/**
+ * Spatial memory entry for important locations
+ */
+export interface SpatialMemory {
+  id: ID;
+  location: { x: number; y: number };
+  type: LocationType;
+  importance: LocationImportance;
+  lastSeenTick: number;
+  firstSeenTick: number;
+  description: string;
+  estimatedResources?: Partial<Inventory>; // For resource locations
+  notes?: string; // Additional context (e.g., "needs water", "almost depleted")
+}
+
+/**
  * Chat message in conversation history
  */
 export interface ChatMessage {
@@ -114,6 +150,7 @@ export interface Agent {
   location: { x: number; y: number };
   visibilityRadius: number;
   conversationHistory: Record<ID, ConversationHistory>; // Chat history with each agent
+  spatialMemory: SpatialMemory[]; // Memory of important locations
 }
 
 /**
