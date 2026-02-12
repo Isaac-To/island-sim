@@ -1,0 +1,19 @@
+{
+  "tickDurationMs": 100,
+  "mapSize": 50,
+  "childDuration": 2160,
+  "pregnancyDuration": 216,
+  "cropGrowthTime": 72,
+  "cropWateringRequired": 3,
+  "agentMovePerTick": 1,
+  "mealsPerDay": 3,
+  "visibilityRadius": 3,
+  "seed": 12345,
+  "llm": {
+    "endpoint": "https://api.openai.com/v1/chat/completions",
+    "apiKey": "sk-your-api-key-here",
+    "model": "gpt-4",
+    "temperature": 0.2,
+    "maxTokens": 256
+  }
+}

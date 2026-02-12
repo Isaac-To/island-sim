@@ -1,0 +1,3170 @@
+{
+  "map": [
+    [
+      {
+        "x": 0,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 18,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 0,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 1,
+        "elevation": 0.5004154759358869,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 1,
+        "elevation": 0.4973670852137432,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 1,
+        "elevation": 0.5022516628475594,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 1,
+        "elevation": 0.5244971952096877,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 1,
+        "elevation": 0.5158359933170051,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 1,
+        "elevation": 0.48768963922806463,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 1,
+        "elevation": 0.4890065192939504,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 1,
+        "elevation": 0.491606753335568,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 1,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 2,
+        "elevation": 0.5007771339671591,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "elevation": 0.5147557087277314,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 2,
+        "elevation": 0.5215053642165783,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 2,
+        "elevation": 0.5004350421109157,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 8,
+        "y": 2,
+        "elevation": 0.534120594104696,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 2,
+        "elevation": 0.5157181043108037,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 2,
+        "elevation": 0.5061344987226312,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 2,
+        "elevation": 0.4900717062660805,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 2,
+        "elevation": 0.4621103198824735,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 2,
+        "elevation": 0.4717653849110969,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 2,
+        "elevation": 0.48575163901273105,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 2,
+        "elevation": 0.4993011735411874,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 2,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "elevation": 0.4992297974441324,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 4,
+        "y": 3,
+        "elevation": 0.5049378383499524,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 3,
+        "elevation": 0.5144228488006822,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 3,
+        "elevation": 0.5392839404569845,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 3,
+        "elevation": 0.5017444906512598,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 3,
+        "elevation": 0.5224803425737996,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 3,
+        "elevation": 0.4863381567415403,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 3,
+        "elevation": 0.5345447971701156,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 3,
+        "elevation": 0.49168046067624704,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 3,
+        "elevation": 0.4541216365937098,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 3,
+        "elevation": 0.4716438348277522,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 3,
+        "elevation": 0.4848810986347786,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 3,
+        "elevation": 0.5103358696809797,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 3,
+        "elevation": 0.5011833055070397,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 3,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 4,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "elevation": 0.4983512737934304,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "elevation": 0.4812785522700002,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 4,
+        "y": 4,
+        "elevation": 0.48595658853491247,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "elevation": 0.5008251557642974,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "elevation": 0.5250130159515451,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 4,
+        "elevation": 0.4795865525385232,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 4,
+        "elevation": 0.4804110695222207,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 4,
+        "elevation": 0.48055150726489904,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 4,
+        "elevation": 0.5864145318227952,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 4,
+        "elevation": 0.566526621513502,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 4,
+        "elevation": 0.5180395859335941,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 4,
+        "elevation": 0.48375800062952407,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 4,
+        "elevation": 0.4820536464951275,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 4,
+        "elevation": 0.5250845408729823,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 4,
+        "elevation": 0.505406592276247,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 4,
+        "elevation": 0.4960480651369202,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 18,
+        "y": 4,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 4,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 5,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 5,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "elevation": 0.49116295753516764,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 5,
+        "elevation": 0.491826728132596,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "elevation": 0.5057088307428688,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "elevation": 0.5246445204784126,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 5,
+        "elevation": 0.5308350654114392,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 5,
+        "elevation": 0.4870664676765555,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 5,
+        "elevation": 0.4721592067751186,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 5,
+        "elevation": 0.43989303051036227,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 5,
+        "elevation": 0.600553256788457,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 11,
+        "y": 5,
+        "elevation": 0.5906292616162294,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 5,
+        "elevation": 0.5852865425300684,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 13,
+        "y": 5,
+        "elevation": 0.5070563876625028,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 5,
+        "elevation": 0.476216502265489,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 5,
+        "elevation": 0.5387573257316898,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 5,
+        "elevation": 0.5013035975404214,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 5,
+        "elevation": 0.4923014145903569,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 18,
+        "y": 5,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 5,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 6,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "elevation": 0.5040640064681879,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "elevation": 0.4866039931086099,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 6,
+        "elevation": 0.504454475809483,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 4,
+        "y": 6,
+        "elevation": 0.494563057493291,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "elevation": 0.5003119465198922,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 6,
+        "elevation": 0.5796413238951627,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 6,
+        "elevation": 0.5858079858805268,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 6,
+        "elevation": 0.5218374789783158,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 6,
+        "elevation": 0.5076304762659303,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 6,
+        "elevation": 0.5635285970554594,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 6,
+        "elevation": 0.6368447517003958,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 6,
+        "elevation": 0.6062400765787246,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 6,
+        "elevation": 0.5510937282774884,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 6,
+        "elevation": 0.479644830763679,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 6,
+        "elevation": 0.5074486110085746,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 6,
+        "elevation": 0.4919156545898062,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 6,
+        "elevation": 0.4932722493618464,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 6,
+        "elevation": 0.4969433106077028,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 6,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 7,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 7,
+        "elevation": 0.5036536865735567,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 7,
+        "elevation": 0.4825956592025782,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 7,
+        "elevation": 0.453300391627994,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 4,
+        "y": 7,
+        "elevation": 0.5121283294039931,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 5,
+        "y": 7,
+        "elevation": 0.620451058666182,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 7,
+        "elevation": 0.5762564043090385,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 7,
+        "elevation": 0.5692825279265132,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 7,
+        "elevation": 0.5155595886040623,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 7,
+        "elevation": 0.5615462814568973,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 7,
+        "elevation": 0.6000194468266487,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 7,
+        "elevation": 0.6277254403616424,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 7,
+        "elevation": 0.5714422071297295,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 7,
+        "elevation": 0.5063348787295355,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 7,
+        "elevation": 0.5588642991694291,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 7,
+        "elevation": 0.553756463471528,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 7,
+        "elevation": 0.5348510156848657,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 7,
+        "elevation": 0.5037540767502634,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 7,
+        "elevation": 0.5023322170640421,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 7,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 8,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 1,
+        "y": 8,
+        "elevation": 0.49727074699853513,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 8,
+        "elevation": 0.4870110216806735,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 8,
+        "elevation": 0.4941185710281528,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 8,
+        "elevation": 0.4804110695222207,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 5,
+        "y": 8,
+        "elevation": 0.5488277812635532,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 8,
+        "elevation": 0.5942958128413055,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 8,
+        "elevation": 0.5789840878736363,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 8,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 8,
+        "elevation": 0.4999941038838113,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 8,
+        "elevation": 0.48113242819627416,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 8,
+        "elevation": 0.5770443320748554,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 8,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 13,
+        "y": 8,
+        "elevation": 0.45900046209590767,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 8,
+        "elevation": 0.483316982711273,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 8,
+        "elevation": 0.5557024342058875,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 8,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 8,
+        "elevation": 0.4803641646437278,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 8,
+        "elevation": 0.4976143789385403,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 8,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 9,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 9,
+        "elevation": 0.4758879189355915,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 9,
+        "elevation": 0.4582063167807571,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 9,
+        "elevation": 0.4674895780418214,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 9,
+        "elevation": 0.44045787801092895,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 9,
+        "elevation": 0.5324177610603333,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 9,
+        "elevation": 0.5983568158548555,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 9,
+        "elevation": 0.5244342837864694,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 8,
+        "y": 9,
+        "elevation": 0.428845669835199,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 9,
+        "elevation": 0.37136211261391305,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 9,
+        "elevation": 0.5056420830544792,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 9,
+        "elevation": 0.4695653866240609,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 9,
+        "elevation": 0.3829994393939526,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 9,
+        "elevation": 0.49567808496526516,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 14,
+        "y": 9,
+        "elevation": 0.4609648615749139,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 9,
+        "elevation": 0.5498754249469471,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 9,
+        "elevation": 0.480985622014205,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 9,
+        "elevation": 0.45354713364635296,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 9,
+        "elevation": 0.48410336997092757,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 9,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 10,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 10,
+        "elevation": 0.46916486972915256,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 2,
+        "y": 10,
+        "elevation": 0.4677157060735175,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 10,
+        "elevation": 0.4621539071089173,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 10,
+        "elevation": 0.4662738587520981,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 10,
+        "elevation": 0.5640084373300749,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 10,
+        "elevation": 0.5497337541739434,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 10,
+        "elevation": 0.43599528242701907,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 10,
+        "elevation": 0.38396443340708625,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 10,
+        "elevation": 0.3348892040572723,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 10,
+        "elevation": 0.4160438094230937,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 10,
+        "elevation": 0.4871680858014036,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 10,
+        "elevation": 0.3725771850394626,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 10,
+        "elevation": 0.3459997964651801,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 10,
+        "elevation": 0.42717037340299124,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 10,
+        "elevation": 0.4949605183963985,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 10,
+        "elevation": 0.45268473829855493,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 10,
+        "elevation": 0.46681905153307357,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 10,
+        "elevation": 0.48426510546654183,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 10,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 11,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 11,
+        "elevation": 0.49295641710188015,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 11,
+        "elevation": 0.4499604506110277,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 11,
+        "elevation": 0.48581573757084534,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 11,
+        "elevation": 0.4570173981989266,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 11,
+        "elevation": 0.5480943406718553,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 6,
+        "y": 11,
+        "elevation": 0.633640291407342,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 7,
+        "y": 11,
+        "elevation": 0.4363381195840018,
+        "terrain": "beach",
+        "resources": {
+          "food": 1
+        }
+      },
+      {
+        "x": 8,
+        "y": 11,
+        "elevation": 0.41215773015307233,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 11,
+        "elevation": 0.35601221539958494,
+        "terrain": "water",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 11,
+        "elevation": 0.4780267622331059,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 11,
+        "elevation": 0.5257030052440103,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 11,
+        "elevation": 0.5423605135384185,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 11,
+        "elevation": 0.42922863488164315,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 11,
+        "elevation": 0.4685362937607249,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 11,
+        "elevation": 0.49502266949020485,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 11,
+        "elevation": 0.47836412090593605,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 17,
+        "y": 11,
+        "elevation": 0.4676646587353584,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 11,
+        "elevation": 0.4915783311390126,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 11,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 12,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 12,
+        "elevation": 0.5056533925375596,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 12,
+        "elevation": 0.5008991059083183,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 12,
+        "elevation": 0.4733438639212389,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 12,
+        "elevation": 0.49098020703320294,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 12,
+        "elevation": 0.5801725280089205,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 6,
+        "y": 12,
+        "elevation": 0.6502108417922496,
+        "terrain": "forest",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 12,
+        "elevation": 0.6040501659692844,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 12,
+        "elevation": 0.4704653536825631,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 9,
+        "y": 12,
+        "elevation": 0.4098238540279273,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 12,
+        "elevation": 0.4312986081576403,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 12,
+        "elevation": 0.4733365272617927,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 12,
+        "elevation": 0.5138989749109545,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 12,
+        "elevation": 0.5275002240935122,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 12,
+        "elevation": 0.5265184532730831,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 12,
+        "elevation": 0.5330856950448641,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 16,
+        "y": 12,
+        "elevation": 0.513570336311544,
+        "terrain": "grass",
+        "resources": {},
+        "cropField": {
+          "id": "crop_16_12_0",
+          "location": {
+            "x": 16,
+            "y": 12
+          },
+          "plantedTick": 0,
+          "watered": 4,
+          "matureTick": 72,
+          "harvested": false
+        }
+      },
+      {
+        "x": 17,
+        "y": 12,
+        "elevation": 0.5021931610511278,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 12,
+        "elevation": 0.5018806857600122,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 12,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 13,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 13,
+        "elevation": 0.5024670693251523,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 2,
+        "y": 13,
+        "elevation": 0.49094298251426993,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 13,
+        "elevation": 0.5023499706870291,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 13,
+        "elevation": 0.5069222828551248,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 5,
+        "y": 13,
+        "elevation": 0.5380583164574084,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 13,
+        "elevation": 0.61126955652039,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 13,
+        "elevation": 0.6197708231655462,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 13,
+        "elevation": 0.5960668192313391,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 13,
+        "elevation": 0.5375546246805251,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 13,
+        "elevation": 0.5131601690312668,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 13,
+        "elevation": 0.5437738612391972,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 13,
+        "elevation": 0.4847208989217024,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 13,
+        "elevation": 0.43842839914796544,
+        "terrain": "beach",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 13,
+        "elevation": 0.5374305197952277,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 13,
+        "elevation": 0.5362233781174154,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 13,
+        "elevation": 0.5306038255289898,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 13,
+        "elevation": 0.514002635939967,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 13,
+        "elevation": 0.4997893803754254,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 13,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 14,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 14,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 14,
+        "elevation": 0.501924345424898,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 14,
+        "elevation": 0.5059992140548547,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 14,
+        "elevation": 0.530797448602068,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 14,
+        "elevation": 0.5451371488680067,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 6,
+        "y": 14,
+        "elevation": 0.5468711850385409,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 14,
+        "elevation": 0.6603955233353267,
+        "terrain": "forest",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 14,
+        "elevation": 0.6228644311926691,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 14,
+        "elevation": 0.536038637339589,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 14,
+        "elevation": 0.5895723286187305,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 14,
+        "elevation": 0.4778701269624266,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 12,
+        "y": 14,
+        "elevation": 0.48674077336345845,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 14,
+        "elevation": 0.43625733400665917,
+        "terrain": "beach",
+        "resources": {
+          "food": 1
+        }
+      },
+      {
+        "x": 14,
+        "y": 14,
+        "elevation": 0.5194730555800264,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 14,
+        "elevation": 0.5284966825625419,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 14,
+        "elevation": 0.5354892369849409,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 14,
+        "elevation": 0.5112151916021247,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 14,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 14,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 15,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 15,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 15,
+        "elevation": 0.5044246704781155,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 15,
+        "elevation": 0.5178902212747313,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 15,
+        "elevation": 0.5178636925258722,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 15,
+        "elevation": 0.4788612788712976,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 15,
+        "elevation": 0.4910831522727457,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 15,
+        "elevation": 0.5366072230872029,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 15,
+        "elevation": 0.5006922601774069,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 15,
+        "elevation": 0.4766210378816995,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 15,
+        "elevation": 0.5025282267198549,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 15,
+        "elevation": 0.4672651284880701,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 15,
+        "elevation": 0.4648787407159554,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 15,
+        "elevation": 0.4895770902009946,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 15,
+        "elevation": 0.5061693631133284,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 15,
+        "elevation": 0.4862974784307779,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 15,
+        "elevation": 0.509420287457887,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 15,
+        "elevation": 0.50031497511428,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 15,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 15,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 3,
+        "y": 16,
+        "elevation": 0.5053696107634792,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 16,
+        "elevation": 0.4945934077237531,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 16,
+        "elevation": 0.4856678489201739,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 16,
+        "elevation": 0.49665013311732303,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 16,
+        "elevation": 0.4766792975349222,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 9,
+        "y": 16,
+        "elevation": 0.48452810580044603,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 16,
+        "elevation": 0.489126114986582,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 11,
+        "y": 16,
+        "elevation": 0.5029911712935123,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 16,
+        "elevation": 0.48642966368845597,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 16,
+        "elevation": 0.4946238125977704,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 16,
+        "elevation": 0.49910089409168173,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 16,
+        "elevation": 0.482516848016864,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 19,
+        "y": 16,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 17,
+        "elevation": 0.4980657354260512,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 17,
+        "elevation": 0.49487376693539126,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 17,
+        "elevation": 0.49210602328658776,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 17,
+        "elevation": 0.5144390935943056,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 17,
+        "elevation": 0.500341524779261,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 17,
+        "elevation": 0.5042922803356132,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 17,
+        "elevation": 0.49985247549056705,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 17,
+        "elevation": 0.54015423671675,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 17,
+        "elevation": 0.5114593592654529,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 17,
+        "elevation": 0.49553592410415387,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 17,
+        "elevation": 0.4945575236770497,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 17,
+        "elevation": 0.4966439115871918,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 16,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 17,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 18,
+        "elevation": 0.4981170030504453,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 18,
+        "elevation": 0.49683807990024953,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 18,
+        "elevation": 0.48231285634902143,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 18,
+        "elevation": 0.49435610240205013,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 10,
+        "y": 18,
+        "elevation": 0.49410910291482807,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 18,
+        "elevation": 0.5029478983218588,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 18,
+        "elevation": 0.5070413975073219,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 18,
+        "elevation": 0.507815138037361,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 15,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 17,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 19,
+        "y": 18,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 1,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 2,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 3,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 4,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 5,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 6,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 7,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 8,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 9,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 10,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 11,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 12,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 13,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 14,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 15,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 16,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {
+          "water": 1
+        }
+      },
+      {
+        "x": 17,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      },
+      {
+        "x": 18,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {},
+        "cropField": {
+          "id": "crop_18_19_0",
+          "location": {
+            "x": 18,
+            "y": 19
+          },
+          "plantedTick": 0,
+          "watered": 4,
+          "matureTick": 72,
+          "harvested": false
+        }
+      },
+      {
+        "x": 19,
+        "y": 19,
+        "elevation": 0.5,
+        "terrain": "grass",
+        "resources": {}
+      }
+    ]
+  ],
+  "agents": [
+    {
+      "id": "agent_001",
+      "name": "Alice",
+      "gender": "female",
+      "age": 1313,
+      "status": "adult",
+      "happiness": 99,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 4,
+        "stone": 0,
+        "water": 2,
+        "food": 0,
+        "tools": 1
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 17,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 16,
+        "y": 12
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_002",
+      "name": "Bob",
+      "gender": "male",
+      "age": 1294,
+      "status": "adult",
+      "happiness": 74,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 2,
+        "stone": 0,
+        "water": 0,
+        "food": 0,
+        "tools": 1
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 14,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 18,
+        "y": 19
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_003",
+      "name": "Carol",
+      "gender": "female",
+      "age": 128,
+      "status": "child",
+      "happiness": 75,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 0,
+        "stone": 1,
+        "water": 2,
+        "food": 0,
+        "tools": 1
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 17,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 10,
+        "y": 7
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_004",
+      "name": "David",
+      "gender": "male",
+      "age": 1323,
+      "status": "adult",
+      "happiness": 92,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 0,
+        "stone": 2,
+        "water": 1,
+        "food": 0,
+        "tools": 0
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 17,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 17,
+        "y": 3
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_005",
+      "name": "Eve",
+      "gender": "female",
+      "age": 115,
+      "status": "child",
+      "happiness": 79,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 2,
+        "stone": 0,
+        "water": 0,
+        "food": 0,
+        "tools": 0
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 17,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 10,
+        "y": 4
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_006",
+      "name": "Frank",
+      "gender": "male",
+      "age": 1074,
+      "status": "adult",
+      "happiness": 88,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 4,
+        "stone": 0,
+        "water": 3,
+        "food": 0,
+        "tools": 1
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 17,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 8,
+        "y": 2
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_007",
+      "name": "Grace",
+      "gender": "female",
+      "age": 1526,
+      "status": "adult",
+      "happiness": 97,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 3,
+        "stone": 2,
+        "water": 3,
+        "food": 0,
+        "tools": 1
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 19,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 15,
+        "y": 5
+      },
+      "visibilityRadius": 3
+    },
+    {
+      "id": "agent_008",
+      "name": "Henry",
+      "gender": "male",
+      "age": 129,
+      "status": "child",
+      "happiness": 96,
+      "memory": [],
+      "relationships": [],
+      "inventory": {
+        "wood": 2,
+        "stone": 2,
+        "water": 2,
+        "food": 0,
+        "tools": 0
+      },
+      "mealsEaten": 0,
+      "lastMealTick": 11,
+      "starving": true,
+      "alive": true,
+      "location": {
+        "x": 14,
+        "y": 0
+      },
+      "visibilityRadius": 3
+    }
+  ],
+  "droppedItems": [],
+  "weather": "sun",
+  "time": 50,
+  "dayNight": "night"
+}
