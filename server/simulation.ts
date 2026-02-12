@@ -27,6 +27,11 @@ export interface SimulationConfig {
 }
 
 /**
+ * Simulation mode type
+ */
+export type SimulationMode = 'playback' | 'live';
+
+/**
  * Main simulation class
  */
 export class Simulation {
@@ -44,6 +49,14 @@ export class Simulation {
   public random: SeededRandom;
   private tickInterval?: NodeJS.Timeout;
   private llmClient?: LLMClient;
+  /**
+   * Current simulation mode: 'playback' for pre-generated events, 'live' for on-demand generation
+   */
+  private mode: SimulationMode = 'playback';
+  /**
+   * Whether live mode is currently paused
+   */
+  private livePaused: boolean = true;
 
   constructor(config: SimulationConfig, initialWorld: World) {
     this.config = config;
@@ -109,7 +122,15 @@ export class Simulation {
     const prevAgents = this.world.agents;
     let newWorld = { ...this.world };
 
-    const newAgents = prevAgents.map(agent => {
+    // Randomize agent order for this tick
+    const shuffledAgents = [...prevAgents];
+    for (let i = shuffledAgents.length - 1; i > 0; i--) {
+      const j = Math.floor(this.random.random() * (i + 1));
+      [shuffledAgents[i], shuffledAgents[j]] = [shuffledAgents[j], shuffledAgents[i]];
+    }
+
+    // Tick agents in random order
+    const newAgents = shuffledAgents.map(agent => {
       const prevStatus = agent.status;
       const prevAlive = agent.alive;
       const updated = tickAgent(agent, this.config.childDuration, this.config.childDuration + 2000, () => this.random.random());
@@ -274,14 +295,20 @@ export class Simulation {
     newWorld.agents = newAgents.filter((agent: Agent) => agent.alive);
     this.world = newWorld;
 
-    // Process agent actions (LLM or fallback)
-    const aliveAgents = this.world.agents.filter((a: Agent) => a.alive);
+    // Randomize order for action phase as well
+    const actionAgents = [...this.world.agents];
+    for (let i = actionAgents.length - 1; i > 0; i--) {
+      const j = Math.floor(this.random.random() * (i + 1));
+      [actionAgents[i], actionAgents[j]] = [actionAgents[j], actionAgents[i]];
+    }
+
+    // Every agent must act each tick, in random order
     if (this.llmClient) {
-      console.log(`[LLM] Processing ${aliveAgents.length} agents with LLM at tick ${this.world.time}`);
-      await this.processAgentsWithLLM(aliveAgents);
+      console.log(`[LLM] Processing ${actionAgents.length} agents with LLM at tick ${this.world.time}`);
+      await this.processAgentsWithLLM(actionAgents);
     } else {
       console.log('[LLM] No LLM client configured, using fallback logic');
-      this.processAgentsWithFallback(aliveAgents);
+      this.processAgentsWithFallback(actionAgents);
     }
 
     this.updateWeather();
@@ -310,47 +337,31 @@ export class Simulation {
     // Get tool schemas based on agent status
     const toolSchemas = getToolSchemas(agent.status);
 
-    // Log LLM query event
-    const queryEventId = this.generateEventId('llm_query');
-    this.logEvent({
-      id: queryEventId,
-      type: 'llm_query',
-      tick: this.world.time,
-      agentsInvolved: [agent.id],
-      details: { status: agent.status, toolCount: toolSchemas.length },
-    });
+    // (Removed llm_query event logging)
 
     // Get tool calls from LLM
-    const response = await this.llmClient!.getToolCalls(agent, this.world, toolSchemas);
-
+    let response = await this.llmClient!.getToolCalls(agent, this.world, toolSchemas);
+    let attempts = 1;
+    const maxAttempts = 10;
+    while (response.toolCalls.length === 0 && attempts < maxAttempts) {
+      console.warn(`[LLM] No tool calls for ${agent.name} (${agent.id}) at tick ${this.world.time}. Retrying (attempt ${attempts + 1})...`);
+      response = await this.llmClient!.getToolCalls(agent, this.world, toolSchemas);
+      attempts++;
+    }
     if (response.toolCalls.length === 0) {
-      // No tool calls returned - execute fallback action instead of doing nothing
-      console.log(`[LLM] No tool calls for ${agent.name}, executing fallback action`);
+      // Still no tool calls, log error and skip agent action
+      console.error(`[LLM] ERROR: No tool calls for ${agent.name} (${agent.id}) at tick ${this.world.time} after ${attempts} attempts. Agent will skip turn.`);
       this.logEvent({
-        id: this.generateEventId('llm_fallback'),
-        type: 'llm_fallback',
+        id: this.generateEventId('llm_error'),
+        type: 'llm_error',
         tick: this.world.time,
         agentsInvolved: [agent.id],
-        details: { reason: 'no_tool_calls' },
+        details: { error: 'no_tool_calls_after_retry', agent: agent.name, attempts },
       });
-      this.executeFallbackAction(agent);
       return;
     }
 
-    // Log LLM response event
-    this.logEvent({
-      id: this.generateEventId('llm_response'),
-      type: 'llm_response',
-      tick: this.world.time,
-      agentsInvolved: [agent.id],
-      details: {
-        toolCalls: response.toolCalls,
-        promptTokens: response.promptTokens,
-        completionTokens: response.completionTokens,
-        totalTokens: response.totalTokens,
-        latency: response.latency,
-      },
-    });
+    // (Removed llm_response event logging)
 
     // Execute the first tool call (LLM should only return one)
     const toolCall = response.toolCalls[0];
@@ -693,5 +704,80 @@ export class Simulation {
   updateDayNight() {
     const hour = this.world.time % 24;
     this.world.dayNight = hour >= 6 && hour < 18 ? 'day' : 'night';
+  }
+
+  /**
+   * Get current simulation mode
+   */
+  getMode(): SimulationMode {
+    return this.mode;
+  }
+
+  /**
+   * Set simulation mode
+   */
+  setMode(mode: SimulationMode) {
+    this.mode = mode;
+    console.log(`[Simulation] Mode set to: ${mode}`);
+  }
+
+  /**
+   * Start live mode (on-demand tick generation)
+   */
+  startLiveMode() {
+    this.mode = 'live';
+    this.livePaused = false;
+    console.log('[Simulation] Live mode started');
+  }
+
+  /**
+   * Pause live mode
+   */
+  pauseLiveMode() {
+    this.livePaused = true;
+    console.log('[Simulation] Live mode paused');
+  }
+
+  /**
+   * Resume live mode
+   */
+  resumeLiveMode() {
+    this.livePaused = false;
+    console.log('[Simulation] Live mode resumed');
+  }
+
+  /**
+   * Check if live mode is paused
+   */
+  isLivePaused(): boolean {
+    return this.livePaused;
+  }
+
+  /**
+   * Generate a single tick and return new events
+   * Returns the events generated during this tick
+   */
+  async generateSingleTick(): Promise<{ events: Event[]; world: World }> {
+    const eventStartIndex = this.eventLog.length;
+
+    await this.tick();
+
+    const newEvents = this.eventLog.slice(eventStartIndex);
+
+    return {
+      events: newEvents,
+      world: this.world,
+    };
+  }
+
+  /**
+   * Get current state without generating new ticks
+   */
+  getCurrentState(): { world: World; eventLog: Event[]; mode: SimulationMode } {
+    return {
+      world: this.world,
+      eventLog: this.eventLog,
+      mode: this.mode,
+    };
   }
 }

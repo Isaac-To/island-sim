@@ -4,10 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { World, Event, ID } from '../server/types';
 import MapCanvas from '../components/MapCanvas';
 import AgentPanel from '../components/AgentPanel';
+import Modal from '../components/Modal';
+import AgentStatsPanel from '../components/AgentStatsPanel';
 import OngoingActionsPanel from '../components/OngoingActionsPanel';
 import EventLogPanel from '../components/EventLogPanel';
 import PlaybackControls from '../components/PlaybackControls';
 import GodMessagePanel from '../components/GodMessagePanel';
+
+
+export type SimMode = 'playback' | 'live';
 
 export default function Home() {
   const [world, setWorld] = useState<World | null>(null);
@@ -16,73 +21,103 @@ export default function Home() {
   const [playing, setPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(500);
   const [selectedAgentId, setSelectedAgentId] = useState<ID | undefined>(undefined);
+  const [mode, setMode] = useState<SimMode>('live');
+  const [liveRunning, setLiveRunning] = useState(false);
+  const [liveLoading, setLiveLoading] = useState(false);
+  const [showAgentModal, setShowAgentModal] = useState(false);
 
   // Fetch initial data
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    fetchData(mode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
+  // Fetch data for current mode
+  const fetchData = async (fetchMode: SimMode = mode) => {
     try {
-      const res = await fetch('/api/simdata');
-      const { eventLog, world } = await res.json();
-      setEventLog(eventLog || []);
-      setWorld(world || null);
-      setCurrentEventIndex(0);
+      if (fetchMode === 'live') {
+        const res = await fetch('/api/simdata?live=true');
+        const { eventLog, world } = await res.json();
+        setEventLog(eventLog || []);
+        setWorld(world || null);
+        setCurrentEventIndex(eventLog.length - 1); // Always show latest in live
+      } else {
+        const res = await fetch('/api/simdata');
+        const { eventLog, world } = await res.json();
+        setEventLog(eventLog || []);
+        setWorld(world || null);
+        setCurrentEventIndex(0);
+      }
     } catch (error) {
       console.error('Failed to fetch simulation data:', error);
     }
   };
 
   // Get current world state based on playback position
+
+  // In playback, world is from eventLog/currentEventIndex; in live, always use latest
   const getCurrentWorld = (): World | null => {
+    if (mode === 'live') return world;
     if (currentEventIndex < 0 || currentEventIndex >= eventLog.length) {
       return world;
     }
-    // Note: If events contain world snapshots, use them here
-    // For now, we use the base world
+    // Could use snapshots here if available
     return world;
   };
-
   const currentWorld = getCurrentWorld();
 
   // Playback controls
+
+  // Playback controls
   const stepForward = () => {
-    if (currentEventIndex < eventLog.length - 1) {
-      setCurrentEventIndex(i => i + 1);
+    if (mode === 'playback') {
+      if (currentEventIndex < eventLog.length - 1) {
+        setCurrentEventIndex(i => i + 1);
+      }
     }
   };
 
   const stepBackward = () => {
-    if (currentEventIndex > 0) {
-      setCurrentEventIndex(i => i - 1);
+    if (mode === 'playback') {
+      if (currentEventIndex > 0) {
+        setCurrentEventIndex(i => i - 1);
+      }
     }
   };
 
   const play = () => {
-    setPlaying(true);
+    if (mode === 'playback') setPlaying(true);
+    if (mode === 'live') setLiveRunning(true);
   };
 
   const pause = () => {
-    setPlaying(false);
+    if (mode === 'playback') setPlaying(false);
+    if (mode === 'live') setLiveRunning(false);
   };
 
+
   const jumpTo = (tick: number) => {
-    // Find event at or closest to tick
-    const eventIndex = eventLog.findIndex(e => e.tick >= tick);
-    if (eventIndex !== -1) {
-      setCurrentEventIndex(eventIndex);
-      // Could also call playback API to load snapshot
-      fetch(`/api/playback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'step', tick }),
-      }).then(() => fetchData());
+    if (mode === 'playback') {
+      // Find event at or closest to tick
+      const eventIndex = eventLog.findIndex(e => e.tick >= tick);
+      if (eventIndex !== -1) {
+        setCurrentEventIndex(eventIndex);
+        // Could also call playback API to load snapshot
+        fetch(`/api/playback`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'step', tick }),
+        }).then(() => fetchData('playback'));
+      }
     }
   };
 
   // Auto-play
+
+  // Playback auto-play
   useEffect(() => {
+    if (mode !== 'playback') return;
     if (!playing) return;
     if (currentEventIndex < eventLog.length - 1) {
       const id = setTimeout(() => stepForward(), playbackSpeed);
@@ -90,7 +125,36 @@ export default function Home() {
     } else {
       setPlaying(false);
     }
-  }, [playing, currentEventIndex, eventLog.length, playbackSpeed]);
+  }, [playing, currentEventIndex, eventLog.length, playbackSpeed, mode]);
+
+  // Live mode: auto-generate ticks when running
+  useEffect(() => {
+    if (mode !== 'live' || !liveRunning) return;
+    let stopped = false;
+    const runTick = async () => {
+      setLiveLoading(true);
+      try {
+        await fetch('/api/simdata?live=true&singleTick=true');
+        await fetchData('live');
+      } catch (e) {
+        // ignore
+      }
+      setLiveLoading(false);
+      if (!stopped && liveRunning) {
+        setTimeout(runTick, playbackSpeed);
+      }
+    };
+    runTick();
+    return () => { stopped = true; };
+  }, [mode, liveRunning, playbackSpeed]);
+
+  // Live mode: single step
+  const liveStep = async () => {
+    setLiveLoading(true);
+    await fetch('/api/simdata?live=true&singleTick=true');
+    await fetchData('live');
+    setLiveLoading(false);
+  };
 
   // Get current tick
   const currentTick = currentEventIndex >= 0 && currentEventIndex < eventLog.length
@@ -100,6 +164,7 @@ export default function Home() {
   // Handlers
   const handleAgentClick = (agentId: ID) => {
     setSelectedAgentId(agentId);
+    setShowAgentModal(true);
   };
 
   const handleTileClick = (x: number, y: number) => {
@@ -132,6 +197,7 @@ export default function Home() {
     }
   };
 
+
   if (!currentWorld) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-900">
@@ -142,8 +208,13 @@ export default function Home() {
 
   const selectedAgent = currentWorld.agents.find(a => a.id === selectedAgentId);
 
+
   return (
     <main className="h-screen bg-gray-900 text-white overflow-hidden">
+      {/* Agent Stats Modal */}
+      <Modal open={showAgentModal && !!selectedAgent} onClose={() => setShowAgentModal(false)}>
+        {selectedAgent && <AgentStatsPanel agent={selectedAgent} world={currentWorld} />}
+      </Modal>
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700 px-4 py-3">
         <div className="flex items-center justify-between">
@@ -156,6 +227,20 @@ export default function Home() {
             <span className={`px-2 py-1 rounded ${currentWorld.dayNight === 'day' ? 'bg-amber-600' : 'bg-indigo-900'}`}>
               {currentWorld.dayNight}
             </span>
+            {/* Mode toggle */}
+            <span className="ml-4">
+              <button
+                className={`px-3 py-1 rounded font-semibold mr-2 ${mode === 'playback' ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-300'}`}
+                onClick={() => { setMode('playback'); setPlaying(false); setLiveRunning(false); }}
+                disabled={mode === 'playback'}
+              >Playback</button>
+              <button
+                className={`px-3 py-1 rounded font-semibold ${mode === 'live' ? 'bg-green-700 text-white' : 'bg-gray-700 text-gray-300'}`}
+                onClick={() => { setMode('live'); setPlaying(false); setLiveRunning(false); }}
+                disabled={mode === 'live'}
+              >Live Simulation</button>
+            </span>
+            <span className={`ml-2 px-2 py-1 rounded text-xs font-bold ${mode === 'live' ? 'bg-green-700' : 'bg-blue-700'}`}>{mode === 'live' ? 'LIVE' : 'PLAYBACK'}</span>
           </div>
         </div>
       </header>
@@ -174,7 +259,7 @@ export default function Home() {
         </div>
 
         {/* Right: Panels */}
-        <div className="flex flex-col gap-4 overflow-y-auto pr-2">
+        <div className="flex flex-col gap-4 overflow-y-auto pr-2 h-full min-h-0">
           {/* Ongoing Actions */}
           <div className="shrink-0">
             <OngoingActionsPanel
@@ -185,7 +270,7 @@ export default function Home() {
           </div>
 
           {/* Agent Details */}
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0 overflow-y-auto">
             <AgentPanel
               agent={selectedAgent || null}
               world={currentWorld}
@@ -193,7 +278,7 @@ export default function Home() {
           </div>
 
           {/* Event Log */}
-          <div className="h-64 shrink-0">
+          <div className="h-64 shrink-0 overflow-y-auto">
             <EventLogPanel
               events={eventLog}
               currentEventIndex={currentEventIndex}
@@ -202,22 +287,55 @@ export default function Home() {
             />
           </div>
 
-          {/* Playback Controls */}
+          {/* Controls: Playback or Live */}
           <div className="shrink-0">
-            <PlaybackControls
-              isPlaying={playing}
-              canStepForward={currentEventIndex < eventLog.length - 1}
-              canStepBackward={currentEventIndex > 0}
-              currentTick={currentTick}
-              totalTicks={eventLog.length > 0 ? eventLog[eventLog.length - 1]?.tick || 0 : 0}
-              onPlay={play}
-              onPause={pause}
-              onStepForward={stepForward}
-              onStepBackward={stepBackward}
-              onJump={jumpTo}
-              speed={playbackSpeed}
-              onSpeedChange={setPlaybackSpeed}
-            />
+            {mode === 'playback' ? (
+              <PlaybackControls
+                isPlaying={playing}
+                canStepForward={currentEventIndex < eventLog.length - 1}
+                canStepBackward={currentEventIndex > 0}
+                currentTick={currentTick}
+                totalTicks={eventLog.length > 0 ? eventLog[eventLog.length - 1]?.tick || 0 : 0}
+                onPlay={play}
+                onPause={pause}
+                onStepForward={stepForward}
+                onStepBackward={stepBackward}
+                onJump={jumpTo}
+                speed={playbackSpeed}
+                onSpeedChange={setPlaybackSpeed}
+              />
+            ) : (
+              <div className="bg-gray-800 rounded-lg p-4 flex flex-col gap-3">
+                <h2 className="text-lg font-bold text-white mb-2">Live Controls</h2>
+                <div className="flex items-center gap-2 mb-2">
+                  <button
+                    onClick={liveRunning ? pause : play}
+                    className={`px-6 py-2 rounded font-semibold ${liveRunning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'} text-white`}
+                    disabled={liveLoading}
+                  >{liveRunning ? '⏸ Pause' : '▶ Play'}</button>
+                  <button
+                    onClick={liveStep}
+                    className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={liveLoading || liveRunning}
+                  >Step</button>
+                  <span className="ml-2 text-xs text-gray-400">Tick: {currentWorld.time}</span>
+                  {liveLoading && <span className="ml-2 text-yellow-400 animate-pulse">Running...</span>}
+                </div>
+                <div className="mb-2">
+                  <label className="text-sm text-gray-400 mb-2 block">Speed</label>
+                  <div className="flex gap-1">
+                    {[2000, 1000, 500, 250, 100].map((s, i) => (
+                      <button
+                        key={s}
+                        onClick={() => setPlaybackSpeed(s)}
+                        className={`flex-1 py-2 text-xs rounded transition-colors ${playbackSpeed === s ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
+                      >{['0.5x', '1x', '2x', '4x', '8x'][i]}</button>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-xs text-gray-400">Each tick triggers LLM/agent logic on demand.</div>
+              </div>
+            )}
           </div>
 
           {/* GOD Message Panel */}

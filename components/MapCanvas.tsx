@@ -226,43 +226,40 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
         continue;
       }
 
-      // Draw background circle for contrast
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-      ctx.beginPath();
-      ctx.arc(screenX + scale * 0.5, screenY + scale * 0.5, scale * 0.4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Draw agent sprite
-      const agentSprite = agent.status === 'child' ? AGENT_CHILD_SPRITE : AGENT_SPRITE;
-      drawSprite(ctx, agentSprite, screenX, screenY, scale);
-
-      // Draw gender indicator
+      // Draw agent as a smaller colored square by gender (centered)
+      const agentSize = scale * 0.6;
+      const agentOffset = (scale - agentSize) / 2;
       ctx.fillStyle = agent.gender === 'male' ? '#4FC3F7' : '#F06292';
-      ctx.beginPath();
-      ctx.arc(screenX + scale * 0.8, screenY + scale * 0.2, scale * 0.15, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillRect(screenX + agentOffset, screenY + agentOffset, agentSize, agentSize);
 
       // Draw selection highlight
       if (agent.id === selectedAgentId) {
         ctx.strokeStyle = '#FFD700';
         ctx.lineWidth = 2;
-        ctx.strokeRect(screenX, screenY, scale, scale);
+        ctx.strokeRect(screenX + agentOffset, screenY + agentOffset, agentSize, agentSize);
       }
 
-      // Draw status indicators
+      // Draw status indicators (starving, pregnancy)
       if (agent.starving) {
         ctx.fillStyle = '#EF5350';
         ctx.beginPath();
         ctx.arc(screenX + scale * 0.2, screenY + scale * 0.8, scale * 0.15, 0, Math.PI * 2);
         ctx.fill();
       }
-
       if (agent.pregnancy) {
         ctx.fillStyle = '#BA68C8';
         ctx.beginPath();
         ctx.arc(screenX + scale * 0.5, screenY + scale * 0.8, scale * 0.15, 0, Math.PI * 2);
         ctx.fill();
       }
+    }
+
+    // Find hovered agent for tooltip
+    let hoveredAgent: Agent | null = null;
+    if (hoveredTile) {
+      hoveredAgent = world.agents.find(
+        a => a.location.x === hoveredTile.x && a.location.y === hoveredTile.y && a.alive
+      ) || null;
     }
 
     // Draw hover effect
@@ -365,18 +362,28 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
         </button>
       </div>
 
-      {/* Hover tooltip */}
+      {/* Hover tooltip for agent or tile */}
       {hoveredTile && (
         <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded text-sm">
-          <div>Tile: ({hoveredTile.x}, {hoveredTile.y})</div>
-          {hoveredTile.y < world.map.length && hoveredTile.x < world.map[0]?.length && (
-            <>
-              <div>Terrain: {world.map[hoveredTile.y]?.[hoveredTile.x]?.terrain}</div>
-              {world.map[hoveredTile.y]?.[hoveredTile.x]?.cropField && (
-                <div>Crop: {world.map[hoveredTile.y]![hoveredTile.x]!.cropField!.watered}/3 watered</div>
+          {(() => {
+            const agent = world.agents.find(
+              a => a.location.x === hoveredTile.x && a.location.y === hoveredTile.y && a.alive
+            );
+            if (agent) {
+              return <div>👤 {agent.name} ({agent.gender})</div>;
+            }
+            return <>
+              <div>Tile: ({hoveredTile.x}, {hoveredTile.y})</div>
+              {hoveredTile.y < world.map.length && hoveredTile.x < world.map[0]?.length && (
+                <>
+                  <div>Terrain: {world.map[hoveredTile.y]?.[hoveredTile.x]?.terrain}</div>
+                  {world.map[hoveredTile.y]?.[hoveredTile.x]?.cropField && (
+                    <div>Crop: {world.map[hoveredTile.y]![hoveredTile.x]!.cropField!.watered}/3 watered</div>
+                  )}
+                </>
               )}
-            </>
-          )}
+            </>;
+          })()}
         </div>
       )}
     </div>

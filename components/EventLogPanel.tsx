@@ -18,7 +18,7 @@ export default function EventLogPanel({ events, currentEventIndex, world, onEven
     'all', 'move', 'communicate', 'craft', 'gather', 'build',
     'procreate', 'give', 'create_crop_field', 'harvest_crop',
     'weather_change', 'birth', 'death', 'resource_drop', 'god_message',
-    'llm_query', 'llm_response', 'llm_error', 'llm_fallback'
+    'llm_error', 'llm_fallback'
   ];
 
   const filteredEvents = useMemo(() => {
@@ -64,8 +64,7 @@ export default function EventLogPanel({ events, currentEventIndex, world, onEven
       case 'weather_change': return '🌤️';
       case 'god_message': return '✨';
       case 'resource_drop': return '📦';
-      case 'llm_query': return '🤖';
-      case 'llm_response': return '✅';
+      // removed llm_query and llm_response icons
       case 'llm_error': return '❌';
       case 'llm_fallback': return '⚠️';
       default: return '•';
@@ -85,8 +84,7 @@ export default function EventLogPanel({ events, currentEventIndex, world, onEven
       case 'death': return 'text-red-400';
       case 'weather_change': return 'text-gray-400';
       case 'god_message': return 'text-amber-400';
-      case 'llm_query': return 'text-blue-300';
-      case 'llm_response': return 'text-green-300';
+      // removed llm_query and llm_response colors
       case 'llm_error': return 'text-red-300';
       case 'llm_fallback': return 'text-yellow-300';
       default: return 'text-gray-300';
@@ -184,19 +182,6 @@ export default function EventLogPanel({ events, currentEventIndex, world, onEven
                     <div className="text-xs text-gray-500">
                       {event.type === 'communicate' && event.details.message ? (
                         <span className="italic text-white">"{event.details.message}"</span>
-                      ) : event.type === 'llm_response' ? (
-                        <span>
-                          {event.details.toolCalls?.map((tc: any) => (
-                            <span key={tc.name} className="mr-1">
-                              {tc.name}
-                            </span>
-                          ))}
-                          {event.details.latency && (
-                            <span className="ml-2 text-gray-400">({event.details.latency}ms)</span>
-                          )}
-                        </span>
-                      ) : event.type === 'llm_query' ? (
-                        <span>Requesting decision...</span>
                       ) : event.type === 'llm_error' ? (
                         <span className="text-red-400">Error: {event.details.error}</span>
                       ) : event.type === 'llm_fallback' ? (

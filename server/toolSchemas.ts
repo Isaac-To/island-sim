@@ -82,6 +82,31 @@ export function getToolSchemas(agentStatus: 'child' | 'adult' | 'elder' | 'dead'
       {
         type: 'function',
         function: {
+          name: 'heal',
+          description: 'Heal yourself or another agent within visibility radius. Restores happiness or health if injured or unhappy.',
+          parameters: {
+            type: 'object',
+            properties: {
+              agentId: {
+                type: 'string',
+                description: 'Your unique agent ID'
+              },
+              targetAgentId: {
+                type: 'string',
+                description: 'ID of agent to heal (can be yourself or another agent within visibility radius)'
+              },
+              amount: {
+                type: 'number',
+                description: 'Amount of healing to apply (1-10)'
+              }
+            },
+            required: ['agentId', 'targetAgentId', 'amount']
+          }
+        }
+      },
+      {
+        type: 'function',
+        function: {
           name: 'gather',
           description: 'Gather a resource (wood, stone, water, food) from the current tile. Requires resource to be present at your location.',
           parameters: {

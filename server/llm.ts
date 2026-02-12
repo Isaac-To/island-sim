@@ -168,13 +168,36 @@ export class LLMClient {
             // OpenAI SDK tool_call structure - use type assertion for function property
             const toolCall = call as unknown as { function: { name: string; arguments: string } };
             if (toolCall.function) {
+              let parsedArgs: Record<string, any> | null = null;
+              try {
+                parsedArgs = JSON.parse(toolCall.function.arguments);
+              } catch (e) {
+                // Attempt to heal common JSON issues
+                let healed = toolCall.function.arguments
+                  .replace(/,\s*}/g, '}') // Remove trailing commas in objects
+                  .replace(/,\s*]/g, ']') // Remove trailing commas in arrays
+                  .replace(/\n/g, ' ') // Remove newlines
+                  .replace(/\r/g, ' ');
+                try {
+                  parsedArgs = JSON.parse(healed);
+                  console.warn('[LLM] Healed malformed tool call arguments:', toolCall.function.arguments, '→', healed);
+                } catch (e2) {
+                  console.error('[LLM] Failed to parse tool call arguments, skipping:', toolCall.function.arguments);
+                  continue;
+                }
+              }
               toolCalls.push({
                 name: toolCall.function.name,
-                arguments: JSON.parse(toolCall.function.arguments),
+                arguments: parsedArgs,
               });
             }
           }
         }
+  // Example for LLM: what a tool call should look like
+  // {
+  //   "name": "move",
+  //   "arguments": { "agentId": "a1", "to": { "x": 5, "y": 3 } }
+  // }
 
         console.log(`[LLM] Parsed ${toolCalls.length} tool calls:`, toolCalls);
 
