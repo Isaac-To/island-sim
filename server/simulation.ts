@@ -359,16 +359,12 @@ export class Simulation {
 
   /**
    * Process agents using LLM for decision-making
-   * Batches agents into groups of 5 for parallel LLM calls
+   * All agents run in parallel for maximum throughput
    */
   private async processAgentsWithLLM(agents: Agent[]) {
-    const batchSize = 5;
-    for (let i = 0; i < agents.length; i += batchSize) {
-      const batch = agents.slice(i, i + batchSize);
-      await Promise.all(
-        batch.map(agent => this.processSingleAgentWithLLM(agent))
-      );
-    }
+    await Promise.all(
+      agents.map(agent => this.processSingleAgentWithLLM(agent))
+    );
   }
 
   /**
