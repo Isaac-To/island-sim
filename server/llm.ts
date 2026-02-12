@@ -4,6 +4,7 @@
 // Research-grade, fully documented
 
 import { Agent, World } from './types';
+import { getPersonalityDescription } from './agent';
 import OpenAI from 'openai';
 import fs from 'fs';
 
@@ -101,6 +102,10 @@ export class LLMClient {
       ageInDays: Math.floor(agent.age / 24),
       status: agent.status,
       happiness: agent.happiness,
+      personality: {
+        traits: agent.personality,
+        description: getPersonalityDescription(agent.personality),
+      },
       inventory: agent.inventory,
       mealsEaten: agent.mealsEaten,
       starving: agent.starving,
@@ -108,9 +113,16 @@ export class LLMClient {
       location: agent.location,
       recentMemory: prunedMemory.map(m => ({
         tick: m.tick,
-        description: m.description
+        description: m.description,
+        category: m.category || 'other',
+        importance: m.importance || 5,
       })),
-      relationships: agent.relationships.slice(0, 10), // Limit to 10 most important
+      relationships: agent.relationships.slice(0, 10).map(r => ({
+        agentId: r.agentId,
+        type: r.type,
+        value: r.value,
+        notes: r.notes || 'No notes',
+      })),
     };
 
     // Build world state summary
@@ -239,6 +251,11 @@ Your goal is to survive and potentially thrive by:
 - Crafting tools and building structures
 - Communicating and cooperating with other agents
 - Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
+
+You have a unique personality that influences your behavior and decisions.
+Pay attention to your personality traits and act according to them.
+Your relationships with other agents matter - nurture positive relationships and be mindful of rivalries.
+Your memories inform your decisions - learn from past experiences.
 
 You can perform ONE action per tick (hour).
 

@@ -72,11 +72,11 @@ export function handleGiveResource(world: World, call: GiveResourceToolCall): Wo
   // Update happiness and relationships
   const newAgents = world.agents.map(agent => {
     if (agent.id === from.id) {
-      let updated = updateRelationshipEvent(agent, to.id, 'give');
+      let updated = updateRelationshipEvent(agent, to.id, to.name, 'give');
       updated = updateHappinessEvent(updated, 'give');
       return updated;
     } else if (agent.id === to.id) {
-      let updated = updateRelationshipEvent(agent, from.id, 'give');
+      let updated = updateRelationshipEvent(agent, from.id, from.name, 'give');
       updated = updateHappinessEvent(updated, 'give');
       return updated;
     }
@@ -214,7 +214,7 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
       // Sender: update memory, happiness, relationship to each recipient
       let updated = agent;
       for (const rec of validRecipients) {
-        updated = updateRelationshipEvent(updated, rec.id, 'communicate');
+        updated = updateRelationshipEvent(updated, rec.id, rec.name, 'communicate');
       }
       updated = updateHappinessEvent(updated, 'communicate');
       return {
@@ -225,12 +225,14 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
             tick: world.time,
             eventId: `chat_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
             description: `[CHAT] ${sender.name}: ${call.message}`,
+            category: 'interaction' as const,
+            importance: 5,
           },
         ],
       };
     } else if (validRecipients.some(r => r.id === agent.id)) {
       // Recipient: update memory, happiness, relationship to sender
-      let updated = updateRelationshipEvent(agent, sender.id, 'communicate');
+      let updated = updateRelationshipEvent(agent, sender.id, sender.name, 'communicate');
       updated = updateHappinessEvent(updated, 'communicate');
       return {
         ...updated,
@@ -240,6 +242,8 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
             tick: world.time,
             eventId: `chat_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
             description: `[CHAT] ${sender.name}: ${call.message}`,
+            category: 'interaction' as const,
+            importance: 5,
           },
         ],
       };

@@ -267,6 +267,13 @@ export class Simulation {
           age: 0,
           status: 'child' as const,
           happiness: 100,
+          personality: {
+            openness: Math.floor(this.random.random() * 100),
+            conscientiousness: Math.floor(this.random.random() * 100),
+            extraversion: Math.floor(this.random.random() * 100),
+            agreeableness: Math.floor(this.random.random() * 100),
+            neuroticism: Math.floor(this.random.random() * 100),
+          },
           memory: [],
           relationships: [],
           inventory: { wood: 0, stone: 0, water: 0, food: 0, tools: 0 },

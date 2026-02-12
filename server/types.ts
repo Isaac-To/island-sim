@@ -38,7 +38,13 @@ export interface Relationship {
   agentId: ID;
   type: RelationshipType;
   value: number; // e.g., trust level
+  notes?: string; // Textual description of the relationship
 }
+
+/**
+ * Memory category for better organization
+ */
+export type MemoryCategory = 'interaction' | 'resource' | 'survival' | 'birth' | 'death' | 'god' | 'other';
 
 /**
  * Agent memory entry
@@ -47,6 +53,19 @@ export interface MemoryEntry {
   tick: number;
   eventId: ID;
   description: string;
+  category?: MemoryCategory;
+  importance?: number; // 0-10 scale for memory importance
+}
+
+/**
+ * Personality trait values (0-100 scale)
+ */
+export interface Personality {
+  openness: number; // Willingness to try new things
+  conscientiousness: number; // Organization, reliability
+  extraversion: number; // Sociability, assertiveness
+  agreeableness: number; // Cooperation, compassion
+  neuroticism: number; // Emotional stability (high = more anxious)
 }
 
 /**
@@ -59,6 +78,7 @@ export interface Agent {
   age: number; // in ticks
   status: AgentStatus;
   happiness: number;
+  personality: Personality;
   memory: MemoryEntry[];
   relationships: Relationship[];
   inventory: Inventory;

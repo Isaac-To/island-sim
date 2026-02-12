@@ -15,6 +15,7 @@ describe('Simulation Agent Actions', () => {
       agentMovePerTick: 1,
       mealsPerDay: 3,
       visibilityRadius: 3,
+      seed: 42,
     };
     const world = createWorld(10, 1);
     world.agents = [createAgent({ age: 3, status: 'adult', id: 'a1', location: { x: 5, y: 5 } })];
