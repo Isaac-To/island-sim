@@ -19,7 +19,7 @@ export default function Home() {
   const [eventLog, setEventLog] = useState<Event[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(500);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1000);
   const [selectedAgentId, setSelectedAgentId] = useState<ID | undefined>(undefined);
   const [mode, setMode] = useState<SimMode>('live');
   const [liveRunning, setLiveRunning] = useState(false);

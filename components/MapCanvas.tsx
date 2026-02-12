@@ -20,6 +20,7 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [hoveredTile, setHoveredTile] = useState<{ x: number; y: number } | null>(null);
   const [raindrops, setRaindrops] = useState<Array<{ x: number; y: number; speed: number }>>([]);
+  const [initialZoomApplied, setInitialZoomApplied] = useState(false);
 
   // Animate rain
   useEffect(() => {
@@ -291,20 +292,42 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
 
   }, [world, scale, offset, selectedAgentId, hoveredTile, raindrops, isDragging]);
 
-  // Center map on first render
+  // Center and zoom map to fit on first render
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || !container || initialZoomApplied) return;
 
-    const mapPixelWidth = world.map[0]?.length * scale || 0;
-    const mapPixelHeight = world.map.length * scale || 0;
+    const mapWidth = world.map[0]?.length || 0;
+    const mapHeight = world.map.length || 0;
 
+    if (mapWidth === 0 || mapHeight === 0) return;
+
+    // Calculate optimal scale to fit map within canvas with some padding
+    const padding = 20; // pixels
+    const availableWidth = canvas.width - padding * 2;
+    const availableHeight = canvas.height - padding * 2;
+
+    const scaleX = availableWidth / mapWidth;
+    const scaleY = availableHeight / mapHeight;
+
+    // Use the smaller scale to fit both dimensions
+    const fitScale = Math.min(scaleX, scaleY);
+
+    // Clamp scale within allowed range
+    const clampedScale = Math.max(4, Math.min(64, Math.floor(fitScale)));
+
+    // Calculate offset to center the map
+    const mapPixelWidth = mapWidth * clampedScale;
+    const mapPixelHeight = mapHeight * clampedScale;
+
+    setScale(clampedScale);
     setOffset({
       x: (canvas.width - mapPixelWidth) / 2,
       y: (canvas.height - mapPixelHeight) / 2,
     });
-  }, [world.map, scale]);
+    setInitialZoomApplied(true);
+  }, [world.map, initialZoomApplied]);
 
   return (
     <div
