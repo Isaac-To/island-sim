@@ -42,3 +42,7 @@ config.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated files
+world*.json
+eventlog.json
