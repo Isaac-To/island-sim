@@ -298,6 +298,15 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
  * Handle a gather action
  */
 export function handleGather(world: World, call: GatherToolCall): World {
+  // Find the agent
+  const agent = world.agents.find(a => a.id === call.agentId);
+  if (!agent || !agent.alive) return world;
+
+  // Check if agent is on the same tile as the resource
+  if (agent.location.x !== call.location.x || agent.location.y !== call.location.y) {
+    return world;
+  }
+
   // For demo: increment agent's inventory if resource exists at location
   const tile = world.map[call.location.y]?.[call.location.x];
   if (!tile || !tile.resources || !tile.resources[call.resource]) return world;
