@@ -131,6 +131,7 @@ const initialWorld: World = {
   weather: random.randomBoolean(0.5) ? 'sun' : 'rain',
   time: 0,
   dayNight: 'day',
+  activeConversations: [],
 };
 
 console.log('Creating simulation (no ticks)...');

@@ -20,6 +20,8 @@ describe('Simulation Agent Lifecycle', () => {
       waterReplenishRate: 1,
       treeRegrowthRate: 0.01,
       cropRegrowthTime: 48,
+      spatialMemoryLimit: 10,
+      maxConversationRounds: 5,
     };
     const world = createWorld(10, 1);
     world.agents = [createAgent({ age: 0, status: 'child', id: 'a1' })];

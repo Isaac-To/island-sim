@@ -8,6 +8,7 @@ import { handleBuild, BuildToolCall } from './tools';
 import { LLMClient, LLMConfig, LLMToolCall } from './llm';
 import { getToolSchemas } from './toolSchemas';
 import { SeededRandom } from '../lib/seededRandom';
+import { ConversationManager } from './conversationManager';
 
 /**
  * Simulation configuration parameters
@@ -31,6 +32,8 @@ export interface SimulationConfig {
   cropRegrowthTime: number; // Ticks required for crop field to regrow after harvest
   // Spatial memory settings
   spatialMemoryLimit: number; // Maximum number of locations to remember per resource category (wood, stone, water, food)
+  // Conversation settings
+  maxConversationRounds: number; // Maximum rounds per in-tick conversation (default: 5)
 }
 
 /**
@@ -64,6 +67,10 @@ export class Simulation {
    * Whether live mode is currently paused
    */
   private livePaused: boolean = true;
+  /**
+   * Conversation manager for handling multi-round conversations
+   */
+  private conversationManager: ConversationManager;
 
   constructor(config: SimulationConfig, initialWorld: World) {
     this.config = config;
@@ -73,6 +80,10 @@ export class Simulation {
       this.llmClient = new LLMClient(config.llm);
       console.log('[LLM] Client initialized with endpoint:', config.llm.endpoint);
     }
+    // Initialize conversation manager with configured max rounds
+    this.conversationManager = new ConversationManager();
+    // Initialize active conversations in world
+    this.world.activeConversations = this.world.activeConversations || [];
   }
 
   /**
@@ -351,6 +362,9 @@ export class Simulation {
       this.processAgentsWithFallback(actionAgents);
     }
 
+    // Process completed conversations and add summaries to memory
+    await this.processCompletedConversations();
+
     this.updateWeather();
     this.regenerateResources();
     this.world.time++;
@@ -418,18 +432,18 @@ export class Simulation {
 
     // Execute main action first (if any)
     if (mainAction) {
-      this.executeToolCall(mainAction);
+      await this.executeToolCall(mainAction);
     }
     // Execute all communicate actions (if any)
     for (const commCall of communicateCalls) {
-      this.executeToolCall(commCall);
+      await this.executeToolCall(commCall);
     }
   }
 
   /**
    * Execute a tool call from LLM
    */
-  private executeToolCall(toolCall: LLMToolCall) {
+  private async executeToolCall(toolCall: LLMToolCall) {
     switch (toolCall.name) {
       case 'move': {
         const call = toolCall.arguments as MoveToolCall;
@@ -470,7 +484,15 @@ export class Simulation {
 
         if (validRecipients.length === 0) return;
 
-        this.world = handleCommunicate(this.world, { ...call, recipients: validRecipients });
+        // Use conversation manager to process communication
+        this.world = await this.conversationManager.processCommunication(
+          this.world,
+          agent,
+          validRecipients,
+          call.message,
+          this.llmClient
+        );
+
         this.logEvent({
           id: this.generateEventId('event'),
           type: 'communicate',
@@ -874,6 +896,29 @@ export class Simulation {
    */
   isLivePaused(): boolean {
     return this.livePaused;
+  }
+
+  /**
+   * Process completed conversations and summarize them
+   */
+  private async processCompletedConversations() {
+    if (!this.llmClient) return;
+
+    const activeConversations = this.conversationManager.getActiveConversations();
+    for (const conversation of activeConversations) {
+      // Check if conversation has reached max rounds
+      if (conversation.currentRound >= this.config.maxConversationRounds) {
+        this.world = await this.conversationManager.summarizeAndStoreConversation(
+          this.world,
+          conversation,
+          this.llmClient
+        );
+      }
+    }
+
+    // Clean up old conversations
+    this.conversationManager.cleanupOldConversations(this.world.time);
+    this.world.activeConversations = this.conversationManager.getActiveConversations();
   }
 
   /**

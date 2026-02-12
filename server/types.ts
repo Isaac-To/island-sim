@@ -114,6 +114,30 @@ export interface ConversationHistory {
 }
 
 /**
+ * Active in-tick conversation session
+ * Tracks multi-round conversations happening within a single tick
+ */
+export interface ActiveConversation {
+  conversationId: string;
+  participants: ID[];
+  messages: ChatMessage[];
+  currentRound: number;
+  maxRounds: number;
+  startTick: number;
+}
+
+/**
+ * Message in an active conversation
+ */
+export interface ConversationMessage {
+  round: number;
+  senderId: ID;
+  senderName: string;
+  message: string;
+  timestamp: number; // tick when sent
+}
+
+/**
  * Personality trait values (0-100 scale)
  */
 export interface Personality {
@@ -259,4 +283,5 @@ export interface World {
   weather: WeatherState;
   time: number; // current tick
   dayNight: 'day' | 'night';
+  activeConversations: ActiveConversation[]; // In-tick multi-round conversations
 }

@@ -158,6 +158,21 @@ export class LLMClient {
           return aRecent - bRecent;
         }),
       spatialMemory: getSpatialMemoriesForLLM(agent, world.time, 15),
+      activeConversations: world.activeConversations
+        .filter(conv => conv.participants.includes(agent.id))
+        .map(conv => ({
+          conversationId: conv.conversationId,
+          participants: conv.participants.map(pid => {
+            const p = world.agents.find(a => a.id === pid);
+            return p ? { id: p.id, name: p.name } : { id: pid, name: pid };
+          }),
+          currentRound: conv.currentRound,
+          maxRounds: conv.maxRounds,
+          messages: conv.messages.map(m => ({
+            sender: m.senderName,
+            message: m.message.length > 100 ? m.message.substring(0, 100) + '...' : m.message,
+          })),
+        })),
     };
 
     // Build world state summary
@@ -392,6 +407,13 @@ RELATIONSHIPS & MEMORY:
 - Be contextual and responsive in conversations.
 - You are expected to communicate with other people every tick. If you have nothing specific to say, greet a nearby person or ask how they are.
 - If you have already spoken to all visible people recently, you may skip communication for this tick.
+
+MULTI-ROUND CONVERSATIONS:
+- When you send a message to someone, it may start a conversation that continues for up to 5 rounds within the same tick.
+- Check your "activeConversations" list to see if you're in an ongoing conversation.
+- If you're in an active conversation, READ the recent messages in that conversation and respond contextually.
+- Conversations allow for back-and-forth exchanges, so pay attention to what was just said to you.
+- Once a conversation reaches 5 rounds, it will be summarized and added to your memory.
 
 ACTION GUIDELINES:
 - You can perform ONE main action per tick (hour), such as moving, gathering, crafting, building, etc.

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { World, Event, ID } from '../server/types';
 import MapCanvas from '../components/MapCanvas';
 import AgentPanel from '../components/AgentPanel';
@@ -28,6 +28,15 @@ export default function Home() {
   const [liveLoading, setLiveLoading] = useState(false);
   const [showAgentModal, setShowAgentModal] = useState(false);
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+  const liveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const modeRef = useRef<SimMode>(mode);
+  const liveRunningRef = useRef<boolean>(liveRunning);
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    modeRef.current = mode;
+    liveRunningRef.current = liveRunning;
+  }, [mode, liveRunning]);
 
   // Fetch initial data
 
@@ -133,7 +142,7 @@ export default function Home() {
   // Live mode: auto-generate ticks when running
   useEffect(() => {
     if (mode !== 'live' || !liveRunning) return;
-    let stopped = false;
+
     const runTick = async () => {
       setLiveLoading(true);
       try {
@@ -143,12 +152,22 @@ export default function Home() {
         // ignore
       }
       setLiveLoading(false);
-      if (!stopped && liveRunning) {
-        setTimeout(runTick, playbackSpeed);
+      // Only schedule next tick if we're still in live mode and running
+      // Use refs to get current state, not the state when runTick was created
+      if (modeRef.current === 'live' && liveRunningRef.current) {
+        liveTimeoutRef.current = setTimeout(runTick, playbackSpeed);
       }
     };
+
     runTick();
-    return () => { stopped = true; };
+
+    // Cleanup function to clear any pending timeouts
+    return () => {
+      if (liveTimeoutRef.current) {
+        clearTimeout(liveTimeoutRef.current);
+        liveTimeoutRef.current = null;
+      }
+    };
   }, [mode, liveRunning, playbackSpeed]);
 
   // Live mode: single step
@@ -330,7 +349,6 @@ export default function Home() {
                   <button
                     onClick={liveRunning ? pause : play}
                     className={`px-6 py-2 rounded font-semibold ${liveRunning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'} text-white`}
-                    disabled={liveLoading}
                   >{liveRunning ? '⏸ Pause' : '▶ Play'}</button>
                   <button
                     onClick={liveStep}

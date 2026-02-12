@@ -127,5 +127,6 @@ export function createWorld(size: number, seed: number): World {
     weather: 'sun',
     time: 0,
     dayNight: 'day',
+    activeConversations: [],
   };
 }

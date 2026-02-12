@@ -20,6 +20,8 @@ describe('Simulation Agent Actions', () => {
       waterReplenishRate: 1,
       treeRegrowthRate: 0.01,
       cropRegrowthTime: 48,
+      spatialMemoryLimit: 10,
+      maxConversationRounds: 5,
     };
     const world = createWorld(10, 1);
     world.agents = [createAgent({ age: 3, status: 'adult', id: 'a1', location: { x: 5, y: 5 } })];

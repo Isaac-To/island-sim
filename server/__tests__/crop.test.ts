@@ -20,6 +20,8 @@ describe('Crop Field System', () => {
       waterReplenishRate: 1,
       treeRegrowthRate: 0.01,
       cropRegrowthTime: 48,
+      spatialMemoryLimit: 10,
+      maxConversationRounds: 5,
     };
     const world = createWorld(5, 1);
     // Place agent on a grass tile
