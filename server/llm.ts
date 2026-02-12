@@ -123,6 +123,19 @@ export class LLMClient {
         value: r.value,
         notes: r.notes || 'No notes',
       })),
+      conversationHistory: Object.entries(agent.conversationHistory)
+        .map(([otherId, history]) => {
+          const otherAgent = world.agents.find(a => a.id === otherId);
+          return {
+            withAgent: otherAgent?.name || otherId,
+            recentMessages: history.messages.slice(-10).map(m => ({
+              tick: m.tick,
+              sender: m.senderName,
+              message: m.message,
+            })),
+          };
+        })
+        .filter(h => h.recentMessages.length > 0),
     };
 
     // Build world state summary
@@ -256,6 +269,12 @@ You have a unique personality that influences your behavior and decisions.
 Pay attention to your personality traits and act according to them.
 Your relationships with other agents matter - nurture positive relationships and be mindful of rivalries.
 Your memories inform your decisions - learn from past experiences.
+
+CONVERSATION CONTEXT:
+- You can see your conversation history with other agents
+- Use this context to inform your communications and build meaningful relationships
+- Reference past conversations when appropriate
+- Remember what others have told you and what you've discussed
 
 You can perform ONE action per tick (hour).
 

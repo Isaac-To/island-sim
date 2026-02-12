@@ -70,6 +70,7 @@ export function createAgent(overrides: Partial<Agent> = {}, random: () => number
     pregnancy: overrides.pregnancy,
     location: overrides.location || { x: 0, y: 0 },
     visibilityRadius: overrides.visibilityRadius ?? 3,
+    conversationHistory: overrides.conversationHistory || {},
   };
   return agent;
 }

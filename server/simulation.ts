@@ -283,6 +283,7 @@ export class Simulation {
           alive: true,
           location: { ...agentAfterProcreate.location },
           visibilityRadius: agentAfterProcreate.visibilityRadius,
+          conversationHistory: {},
         };
         newWorld.agents.push(child);
         this.logEvent({

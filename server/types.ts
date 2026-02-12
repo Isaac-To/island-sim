@@ -55,6 +55,26 @@ export interface MemoryEntry {
   description: string;
   category?: MemoryCategory;
   importance?: number; // 0-10 scale for memory importance
+  participants?: ID[]; // Other agents involved in this memory (for conversations)
+}
+
+/**
+ * Chat message in conversation history
+ */
+export interface ChatMessage {
+  tick: number;
+  senderId: ID;
+  senderName: string;
+  message: string;
+  participants: ID[]; // All agents who received this message
+}
+
+/**
+ * Conversation history between agents
+ */
+export interface ConversationHistory {
+  messages: ChatMessage[];
+  lastUpdated: number; // tick of last message
 }
 
 /**
@@ -93,6 +113,7 @@ export interface Agent {
   };
   location: { x: number; y: number };
   visibilityRadius: number;
+  conversationHistory: Record<ID, ConversationHistory>; // Chat history with each agent
 }
 
 /**

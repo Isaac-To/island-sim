@@ -11,21 +11,27 @@ interface OngoingActionsPanelProps {
 }
 
 export default function OngoingActionsPanel({ events, currentTick, world }: OngoingActionsPanelProps) {
-  // Get events from current tick, sorted by order in events array (which matches action order)
-  const currentEvents = useMemo(() => {
-    return events.filter(e => e.tick === currentTick);
+  // Get events from current tick and previous 10 ticks for chat history
+  const recentEvents = useMemo(() => {
+    const minTick = Math.max(0, currentTick - 10);
+    return events.filter(e => e.tick >= minTick && e.tick <= currentTick);
   }, [events, currentTick]);
 
-  // Group events by agent (first agent in agentsInvolved)
-  const eventsByAgent: Record<string, Event[]> = {};
-  currentEvents.forEach(event => {
-    const agentId = event.agentsInvolved[0];
-    if (!agentId) return;
-    if (!eventsByAgent[agentId]) eventsByAgent[agentId] = [];
-    eventsByAgent[agentId].push(event);
+  // Separate chat events from other events
+  const chatEvents = recentEvents.filter(e => e.type === 'communicate');
+  const otherCurrentEvents = recentEvents.filter(e => e.tick === currentTick && e.type !== 'communicate');
+
+  // Group chat events by tick for display
+  const chatsByTick: Record<number, Event[]> = {};
+  chatEvents.forEach(event => {
+    if (!chatsByTick[event.tick]) chatsByTick[event.tick] = [];
+    chatsByTick[event.tick].push(event);
   });
-  // Add agentOrder for rendering
-  const agentOrder = Object.keys(eventsByAgent);
+
+  // Sort ticks in descending order (most recent first)
+  const sortedChatTicks = Object.keys(chatsByTick)
+    .map(Number)
+    .sort((a, b) => b - a);
 
   // Fix: Add getEventIcon function
   const getEventIcon = (type: string) => {
@@ -41,6 +47,8 @@ export default function OngoingActionsPanel({ events, currentTick, world }: Ongo
       case 'weather_change': return '🌤️';
       case 'god_message': return '✨';
       case 'resource_drop': return '📦';
+      case 'move': return '🚶';
+      case 'craft': return '🔨';
       default: return '•';
     }
   };
@@ -53,62 +61,97 @@ export default function OngoingActionsPanel({ events, currentTick, world }: Ongo
   return (
     <div className="bg-gray-800 rounded-lg p-4">
       <h2 className="text-lg font-bold text-white mb-3">Agent Chat</h2>
-      <div className="text-sm text-gray-400 mb-2">Tick {currentTick}</div>
+      <div className="text-sm text-gray-400 mb-2">Current Tick: {currentTick}</div>
 
-      {agentOrder.length === 0 ? (
-        <div className="text-gray-500 text-sm italic">No actions this tick</div>
-      ) : (
-        <div className="space-y-4 max-h-64 overflow-y-auto">
-          {agentOrder.map(agentId => (
-            <div key={agentId} className="flex items-start gap-2">
-              <div className="w-10 flex-shrink-0 flex flex-col items-center pt-2">
-                <div className="rounded-full bg-gray-700 w-8 h-8 flex items-center justify-center text-lg font-bold text-white">
-                  {getAgentName(agentId)[0]}
+      {/* Chat History Section */}
+      <div className="mb-4">
+        <h3 className="text-md font-semibold text-white mb-2">Conversations</h3>
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          {sortedChatTicks.length === 0 ? (
+            <div className="text-gray-500 text-sm italic">No conversations yet</div>
+          ) : (
+            sortedChatTicks.map(tick => (
+              <div key={tick} className="border-l-2 border-blue-500 pl-3">
+                <div className="text-xs text-gray-400 mb-1">
+                  Tick {tick} ({tick === currentTick ? 'now' : `${currentTick - tick} ticks ago`})
                 </div>
-                <div className="text-xs text-gray-400 mt-1 truncate w-10 text-center">{getAgentName(agentId)}</div>
+                <div className="space-y-2">
+                  {chatsByTick[tick].map((event, idx) => {
+                    const sender = world.agents.find(a => a.id === event.agentsInvolved[0]);
+                    return (
+                      <div key={event.id || idx} className="bg-blue-900/30 p-3 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <div className="rounded-full bg-blue-700 w-8 h-8 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                            {getAgentName(event.agentsInvolved[0])[0]}
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-blue-300 text-xs font-semibold mb-1">
+                              {getAgentName(event.agentsInvolved[0])}
+                              {event.agentsInvolved.length > 1 && (
+                                <span className="text-gray-400 font-normal ml-1">
+                                  → {event.agentsInvolved.slice(1).map(id => getAgentName(id)).join(', ')}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-white text-sm italic">
+                              "{event.details.message}"
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="flex-1 space-y-1">
-                {eventsByAgent[agentId].map((event, idx) => (
-                  <div key={event.id || idx} className="bg-gray-700 p-2 rounded-lg flex items-center gap-2">
-                    <span className="text-xl">{getEventIcon(event.type)}</span>
-                    <span className="text-white text-sm">
-                      {event.type === 'communicate' && event.details.message ? (
-                        <span className="italic">"{event.details.message}"</span>
-                      ) : event.type === 'move' && event.details.to ? (
-                        <>Moved to ({event.details.to.x}, {event.details.to.y})</>
-                      ) : event.type === 'gather' && event.details.resource ? (
-                        <>Gathered {event.details.resource}</>
-                      ) : event.type === 'craft' && event.details.item ? (
-                        <>Crafted {event.details.item}</>
-                      ) : event.type === 'build' && event.details.structure ? (
-                        <>Built {event.details.structure}</>
-                      ) : event.type === 'give' && event.details.resource ? (
-                        <>Gave {event.details.amount} {event.details.resource}</>
-                      ) : event.type === 'create_crop_field' ? (
-                        <>Planted a crop field</>
-                      ) : event.type === 'harvest_crop' ? (
-                        <>Harvested crops</>
-                      ) : event.type === 'procreate' ? (
-                        <>Procreated</>
-                      ) : event.type === 'birth' ? (
-                        <>A child was born</>
-                      ) : event.type === 'death' ? (
-                        <>Died</>
-                      ) : event.type === 'weather_change' && event.details.weather ? (
-                        <>Weather changed to {event.details.weather}</>
-                      ) : event.type === 'god_message' && event.details.message ? (
-                        <span className="italic">[GOD] "{event.details.message}"</span>
-                      ) : event.type === 'resource_drop' ? (
-                        <>Dropped resources</>
-                      ) : (
-                        <>{event.type.replace(/_/g, ' ')}</>
-                      )}
-                    </span>
-                  </div>
-                ))}
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Other Actions Section (Smaller, less prominent) */}
+      {otherCurrentEvents.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-gray-700">
+          <h3 className="text-xs font-semibold text-gray-400 mb-2">Other Actions (Tick {currentTick})</h3>
+          <div className="space-y-1 max-h-32 overflow-y-auto">
+            {otherCurrentEvents.map((event, idx) => (
+              <div key={event.id || idx} className="bg-gray-700/50 px-2 py-1 rounded flex items-center gap-2 text-xs">
+                <span className="text-sm">{getEventIcon(event.type)}</span>
+                <span className="text-gray-300">
+                  <span className="font-semibold">{getAgentName(event.agentsInvolved[0])}</span>
+                  {' '}
+                  {event.type === 'move' && event.details.to ? (
+                    <>moved to ({event.details.to.x}, {event.details.to.y})</>
+                  ) : event.type === 'gather' && event.details.resource ? (
+                    <>gathered {event.details.resource}</>
+                  ) : event.type === 'craft' && event.details.item ? (
+                    <>crafted {event.details.item}</>
+                  ) : event.type === 'build' && event.details.structure ? (
+                    <>built {event.details.structure}</>
+                  ) : event.type === 'give' && event.details.resource ? (
+                    <>gave {event.details.amount} {event.details.resource}</>
+                  ) : event.type === 'create_crop_field' ? (
+                    <>planted crops</>
+                  ) : event.type === 'harvest_crop' ? (
+                    <>harvested crops</>
+                  ) : event.type === 'procreate' ? (
+                    <>procreated</>
+                  ) : event.type === 'birth' ? (
+                    <>had a child</>
+                  ) : event.type === 'death' ? (
+                    <>died</>
+                  ) : event.type === 'weather_change' && event.details.weather ? (
+                    <>weather: {event.details.weather}</>
+                  ) : event.type === 'god_message' && event.details.message ? (
+                    <>[GOD] "{event.details.message}"</>
+                  ) : event.type === 'resource_drop' ? (
+                    <>dropped resources</>
+                  ) : (
+                    <>{event.type.replace(/_/g, ' ')}</>
+                  )}
+                </span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 

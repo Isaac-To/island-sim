@@ -75,6 +75,7 @@ const agents: Agent[] = agentNames.map((info, index) => {
     alive: true,
     location,
     visibilityRadius: config.visibilityRadius,
+    conversationHistory: {},
   };
 });
 
