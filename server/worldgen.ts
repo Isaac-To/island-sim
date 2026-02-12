@@ -77,20 +77,29 @@ export function generateIslandMap(size: number, seed: number): Tile[][] {
 
       // Resource placement based on terrain type
       const resources: Partial<Inventory> = {};
+      const resourceLimits: { maxWood?: number; maxStone?: number; maxWater?: number; maxFood?: number; maxTools?: number } = {};
+
       if (terrain === 'forest' && random.randomBoolean(0.2)) {
-        resources.wood = 1 + random.randomInt(0, 3);
+        const woodAmount = 1 + random.randomInt(0, 3);
+        resources.wood = woodAmount;
+        resourceLimits.maxWood = woodAmount + 3; // Can regrow up to 3 more
       }
       if (terrain === 'rocky' && random.randomBoolean(0.15)) {
-        resources.stone = 1 + random.randomInt(0, 2);
+        const stoneAmount = 1 + random.randomInt(0, 2);
+        resources.stone = stoneAmount;
+        resourceLimits.maxStone = stoneAmount; // Stone doesn't regrow
       }
       if (terrain === 'beach' && random.randomBoolean(0.05)) {
         resources.food = 1;
+        resourceLimits.maxFood = 1; // Beach food is limited
       }
       if (terrain === 'grass' && random.randomBoolean(0.1)) {
-        resources.water = 1;
+        const waterAmount = 1;
+        resources.water = waterAmount;
+        resourceLimits.maxWater = waterAmount + 2; // Can replenish up to 2 more
       }
 
-      row.push({ x, y, elevation, terrain, resources });
+      row.push({ x, y, elevation, terrain, resources, resourceLimits });
     }
     map.push(row);
   }

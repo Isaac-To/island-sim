@@ -32,5 +32,8 @@ export function loadConfig(): SimulationConfig {
     visibilityRadius: envOverride('VISIBILITY_RADIUS', config.visibilityRadius ?? 3),
     seed: envOverride('SEED', config.seed ?? Date.now()), // Default to current timestamp
     llm: config.llm,
+    waterReplenishRate: envOverride('WATER_REPLENISH_RATE', config.waterReplenishRate ?? 1),
+    treeRegrowthRate: envOverride('TREE_REGROWTH_RATE', config.treeRegrowthRate ?? 0.01),
+    cropRegrowthTime: envOverride('CROP_REGROWTH_TIME', config.cropRegrowthTime ?? 48),
   };
 }

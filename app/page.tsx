@@ -10,7 +10,9 @@ import OngoingActionsPanel from '../components/OngoingActionsPanel';
 import EventLogPanel from '../components/EventLogPanel';
 import PlaybackControls from '../components/PlaybackControls';
 import GodMessagePanel from '../components/GodMessagePanel';
-
+import TileInspector from '../components/TileInspector';
+import StatsModal from '../components/StatsModal';
+import { Tile } from '../server/types';
 
 export type SimMode = 'playback' | 'live';
 
@@ -25,6 +27,7 @@ export default function Home() {
   const [liveRunning, setLiveRunning] = useState(false);
   const [liveLoading, setLiveLoading] = useState(false);
   const [showAgentModal, setShowAgentModal] = useState(false);
+  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
 
   // Fetch initial data
 
@@ -168,8 +171,10 @@ export default function Home() {
   };
 
   const handleTileClick = (x: number, y: number) => {
-    console.log('Tile clicked:', x, y);
-    // Could show tile details or select for building
+    const tile = currentWorld?.map[y]?.[x];
+    if (tile) {
+      setSelectedTile(tile);
+    }
   };
 
   const handleEventClick = (index: number) => {
@@ -212,9 +217,23 @@ export default function Home() {
   return (
     <main className="h-screen bg-gray-900 text-white overflow-hidden">
       {/* Agent Stats Modal */}
-      <Modal open={showAgentModal && !!selectedAgent} onClose={() => setShowAgentModal(false)}>
+      <StatsModal
+        open={showAgentModal && !!selectedAgent}
+        onClose={() => setShowAgentModal(false)}
+        title="Agent Stats"
+      >
         {selectedAgent && <AgentStatsPanel agent={selectedAgent} world={currentWorld} />}
-      </Modal>
+      </StatsModal>
+
+      {/* Tile Inspector Modal */}
+      <StatsModal
+        open={!!selectedTile}
+        onClose={() => setSelectedTile(null)}
+        title="Tile Details"
+      >
+        {selectedTile && <TileInspector tile={selectedTile} />}
+      </StatsModal>
+
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700 px-4 py-3">
         <div className="flex items-center justify-between">

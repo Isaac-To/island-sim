@@ -10,7 +10,6 @@ export default function AgentStatsPanel({ agent, world }: AgentStatsPanelProps) 
   // For now, reuse AgentPanel's layout, but can be expanded for more effects/stats
   return (
     <div className="text-white">
-      <h2 className="text-lg font-bold mb-4">Agent Stats</h2>
       <div className="mb-2">Name: <span className="font-mono">{agent.name}</span></div>
       <div className="mb-2">ID: <span className="font-mono text-xs">{agent.id}</span></div>
       <div className="mb-2">Gender: {agent.gender}</div>

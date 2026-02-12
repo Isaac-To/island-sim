@@ -25,6 +25,10 @@ export interface SimulationConfig {
   visibilityRadius: number;
   seed: number; // Random seed for reproducibility
   llm?: LLMConfig;
+  // Resource regeneration settings
+  waterReplenishRate: number; // Water units per rain tick
+  treeRegrowthRate: number; // Wood units regenerated per tick per forest tile
+  cropRegrowthTime: number; // Ticks required for crop field to regrow after harvest
 }
 
 /**
@@ -345,6 +349,7 @@ export class Simulation {
     }
 
     this.updateWeather();
+    this.regenerateResources();
     this.world.time++;
     this.updateDayNight();
   }
@@ -680,13 +685,62 @@ export class Simulation {
         agentsInvolved: [],
         details: { weather: newWeather },
       });
-      // If rain, water all crop fields
+      // If rain, water all crop fields and replenish water sources
       if (newWeather === 'rain') {
         for (const row of this.world.map) {
           for (const tile of row) {
+            // Water crop fields
             if (tile.cropField && !tile.cropField.harvested) {
               tile.cropField.watered += 1;
             }
+            // Replenish water on grass tiles
+            if (tile.terrain === 'grass' && tile.resourceLimits.maxWater) {
+              if (!tile.resources.water) tile.resources.water = 0;
+              if (tile.resources.water < tile.resourceLimits.maxWater) {
+                tile.resources.water = Math.min(
+                  tile.resourceLimits.maxWater,
+                  tile.resources.water + this.config.waterReplenishRate
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Regenerate resources on tiles (tree regrowth, crop regrowth)
+   */
+  regenerateResources() {
+    for (const row of this.world.map) {
+      for (const tile of row) {
+        // Tree regrowth in forest tiles
+        if (tile.terrain === 'forest' && tile.resourceLimits.maxWood) {
+          if (!tile.resources.wood) tile.resources.wood = 0;
+          if (tile.resources.wood < tile.resourceLimits.maxWood) {
+            // Small chance to regrow, influenced by regrowth rate
+            if (this.random.random() < this.config.treeRegrowthRate) {
+              tile.resources.wood = Math.min(
+                tile.resourceLimits.maxWood,
+                tile.resources.wood + 1
+              );
+            }
+          }
+        }
+
+        // Crop field regrowth after harvest
+        if (tile.cropField && tile.cropField.harvested) {
+          const ticksSinceHarvest = this.world.time - tile.cropField.matureTick;
+          if (ticksSinceHarvest >= this.config.cropRegrowthTime) {
+            // Reset crop field for regrowth
+            tile.cropField = {
+              ...tile.cropField,
+              plantedTick: this.world.time,
+              watered: 0,
+              matureTick: this.world.time + this.config.cropGrowthTime,
+              harvested: false,
+            };
           }
         }
       }

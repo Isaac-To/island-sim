@@ -188,6 +188,17 @@ export interface Structure {
 export type TerrainType = 'beach' | 'forest' | 'rocky' | 'water' | 'grass';
 
 /**
+ * Resource limits per tile type
+ */
+export interface TileResourceLimits {
+  maxWood?: number;
+  maxStone?: number;
+  maxWater?: number;
+  maxFood?: number;
+  maxTools?: number;
+}
+
+/**
  * Map tile definition
  */
 export interface Tile {
@@ -196,6 +207,7 @@ export interface Tile {
   elevation: number;
   terrain: TerrainType;
   resources: Partial<Inventory>;
+  resourceLimits: TileResourceLimits;
   cropField?: CropField;
   structure?: Structure;
 }

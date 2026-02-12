@@ -8,6 +8,7 @@ describe('Crop Field System', () => {
     const config = {
       tickDurationMs: 10,
       mapSize: 5,
+      initialAgentCount: 1,
       childDuration: 2,
       pregnancyDuration: 216,
       cropGrowthTime: 2,
@@ -15,6 +16,10 @@ describe('Crop Field System', () => {
       agentMovePerTick: 1,
       mealsPerDay: 3,
       visibilityRadius: 3,
+      seed: 1,
+      waterReplenishRate: 1,
+      treeRegrowthRate: 0.01,
+      cropRegrowthTime: 48,
     };
     const world = createWorld(5, 1);
     // Place agent on a grass tile
@@ -34,13 +39,15 @@ describe('Crop Field System', () => {
     const tile = sim.world.map[grassLoc.y][grassLoc.x];
     expect(tile.cropField).toBeDefined();
     // Simulate rain to water crop
-    tile.cropField.watered = 1;
-    // Tick 2: crop matures
-    sim.world.time = tile.cropField.matureTick;
-    // Tick 3: agent harvests crop
-    sim.tick();
-    expect(tile.cropField.harvested).toBe(true);
-    const agent = sim.world.agents[0];
-    expect(agent.inventory.food).toBeGreaterThan(0);
+    if (tile.cropField) {
+      tile.cropField.watered = 1;
+      // Tick 2: crop matures
+      sim.world.time = tile.cropField.matureTick;
+      // Tick 3: agent harvests crop
+      sim.tick();
+      expect(tile.cropField.harvested).toBe(true);
+      const agent = sim.world.agents[0];
+      expect(agent.inventory.food).toBeGreaterThan(0);
+    }
   });
 });

@@ -395,17 +395,34 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
             if (agent) {
               return <div>👤 {agent.name} ({agent.gender})</div>;
             }
-            return <>
-              <div>Tile: ({hoveredTile.x}, {hoveredTile.y})</div>
-              {hoveredTile.y < world.map.length && hoveredTile.x < world.map[0]?.length && (
-                <>
-                  <div>Terrain: {world.map[hoveredTile.y]?.[hoveredTile.x]?.terrain}</div>
-                  {world.map[hoveredTile.y]?.[hoveredTile.x]?.cropField && (
-                    <div>Crop: {world.map[hoveredTile.y]![hoveredTile.x]!.cropField!.watered}/3 watered</div>
-                  )}
-                </>
-              )}
-            </>;
+            const tile = world.map[hoveredTile.y]?.[hoveredTile.x];
+            if (!tile) return null;
+            return (
+              <>
+                <div>Tile: ({hoveredTile.x}, {hoveredTile.y})</div>
+                <div>Terrain: {tile.terrain}</div>
+                {Object.keys(tile.resources).length > 0 && (
+                  <div className="mt-1">
+                    {Object.entries(tile.resources).map(([resource, amount]) => {
+                      const max = tile.resourceLimits[`max${resource.charAt(0).toUpperCase() + resource.slice(1)}` as keyof typeof tile.resourceLimits];
+                      return (
+                        <div key={resource} className="flex items-center gap-2">
+                          <span className="capitalize">{resource}:</span>
+                          <span>{amount}</span>
+                          {max && <span className="text-gray-400">/ {max}</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                {tile.cropField && !tile.cropField.harvested && (
+                  <div>Crop: {tile.cropField.watered}/3 watered</div>
+                )}
+                {tile.cropField && tile.cropField.harvested && (
+                  <div className="text-yellow-400">Crop: Regrowing...</div>
+                )}
+              </>
+            );
           })()}
         </div>
       )}
