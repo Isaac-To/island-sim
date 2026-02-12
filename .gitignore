@@ -42,3 +42,6 @@ config.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+llm_interactions.log
+server/eventlog.json
+server/world.json
