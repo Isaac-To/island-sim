@@ -369,8 +369,6 @@ export class Simulation {
     // Get tool schemas based on agent status
     const toolSchemas = getToolSchemas(agent.status);
 
-    // (Removed llm_query event logging)
-
     // Get tool calls from LLM
     let response = await this.llmClient!.getToolCalls(agent, this.world, toolSchemas);
     let attempts = 1;
@@ -393,11 +391,18 @@ export class Simulation {
       return;
     }
 
-    // (Removed llm_response event logging)
+    // Separate communicate and non-communicate tool calls
+    const communicateCalls = response.toolCalls.filter(tc => tc.name === 'communicate');
+    const mainAction = response.toolCalls.find(tc => tc.name !== 'communicate');
 
-    // Execute the first tool call (LLM should only return one)
-    const toolCall = response.toolCalls[0];
-    this.executeToolCall(toolCall);
+    // Execute main action first (if any)
+    if (mainAction) {
+      this.executeToolCall(mainAction);
+    }
+    // Execute all communicate actions (if any)
+    for (const commCall of communicateCalls) {
+      this.executeToolCall(commCall);
+    }
   }
 
   /**
