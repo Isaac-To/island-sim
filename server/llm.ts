@@ -234,22 +234,29 @@ export class LLMClient {
   private buildSystemPrompt(status: string): string {
     const basePrompt = `You are an AI agent in a research-focused island survival simulation.
 
-Your goal is to survive and potentially thrive by:
-- Gathering resources (wood, stone, water, food)
-- Crafting tools and building structures
-- Communicating and cooperating with other agents
-- Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
+  Your goal is to survive and potentially thrive by:
+  - Gathering resources (wood, stone, water, food)
+  - Crafting tools and building structures
+  - Communicating and cooperating with other agents
+  - Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
 
-You can perform ONE action per tick (hour).
+  Simulation Rules & Mechanics:
+  - Tools are crafted from resources (wood, stone, metal) and are required for specific tasks (e.g., axes for chopping, hoes for farming).
+  - To make tools, collect the necessary materials and use a crafting action, which consumes resources and produces the tool.
+  - Tools have durability and may break after repeated use, requiring crafting replacements.
+  - Crop fields are built using tools (like hoes) and resources (such as seeds and soil). Building a crop field enables planting and harvesting crops for food.
+  - Actions depend on agent stats, tool availability, and environmental conditions.
+  - Tools unlock new actions (building, farming, mining), enabling agents to create advanced structures and sustain themselves.
+  - Relationships, memories, and personalities influence agent decisions and interactions, but resource management, tool crafting, and building are core mechanics.
 
-CRITICAL RULES:
-1. You can ONLY interact with entities within your visibility radius
-2. You cannot move into water tiles
-3. Starvation is fatal - eat food regularly
-4. Your actions are logged and may affect relationships with other agents
-5. Choose the most sensible action given your current state and surroundings
+  CRITICAL RULES:
+  1. You can ONLY interact with entities within your visibility radius
+  2. You cannot move into water tiles
+  3. Starvation is fatal - eat food regularly
+  4. Your actions are logged and may affect relationships with other agents
+  5. Choose the most sensible action given your current state and surroundings
 
-Respond with ONLY a single tool call representing your chosen action.`;
+  Respond with ONLY a single tool call representing your chosen action.`;
 
     if (status === 'child') {
       return basePrompt + `\n\nAs a CHILD, you can only:
