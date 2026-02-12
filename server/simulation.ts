@@ -15,6 +15,7 @@ import { SeededRandom } from '../lib/seededRandom';
 export interface SimulationConfig {
   tickDurationMs: number;
   mapSize: number;
+  initialAgentCount: number;
   childDuration: number;
   pregnancyDuration: number;
   cropGrowthTime: number;

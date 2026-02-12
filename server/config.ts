@@ -22,6 +22,7 @@ export function loadConfig(): SimulationConfig {
   return {
     tickDurationMs: envOverride('TICK_DURATION_MS', config.tickDurationMs ?? 100),
     mapSize: envOverride('MAP_SIZE', config.mapSize ?? 20),
+    initialAgentCount: envOverride('INITIAL_AGENT_COUNT', config.initialAgentCount ?? 8),
     childDuration: envOverride('CHILD_DURATION', config.childDuration ?? 168),
     pregnancyDuration: envOverride('PREGNANCY_DURATION', config.pregnancyDuration ?? 216),
     cropGrowthTime: envOverride('CROP_GROWTH_TIME', config.cropGrowthTime ?? 72),

@@ -17,7 +17,7 @@ const random = new SeededRandom(config.seed);
 // Generate island map
 const map = generateIslandMap(config.mapSize, config.seed);
 
-// Create demo agents with varied starting conditions
+// Extended list of agent names to support varying population sizes
 const agentNames = [
   { name: 'Alice', gender: 'female' as const },
   { name: 'Bob', gender: 'male' as const },
@@ -27,7 +27,50 @@ const agentNames = [
   { name: 'Frank', gender: 'male' as const },
   { name: 'Grace', gender: 'female' as const },
   { name: 'Henry', gender: 'male' as const },
+  { name: 'Ivy', gender: 'female' as const },
+  { name: 'Jack', gender: 'male' as const },
+  { name: 'Kate', gender: 'female' as const },
+  { name: 'Liam', gender: 'male' as const },
+  { name: 'Mia', gender: 'female' as const },
+  { name: 'Noah', gender: 'male' as const },
+  { name: 'Olivia', gender: 'female' as const },
+  { name: 'Peter', gender: 'male' as const },
+  { name: 'Quinn', gender: 'female' as const },
+  { name: 'Ryan', gender: 'male' as const },
+  { name: 'Sophia', gender: 'female' as const },
+  { name: 'Thomas', gender: 'male' as const },
+  { name: 'Uma', gender: 'female' as const },
+  { name: 'Victor', gender: 'male' as const },
+  { name: 'Wendy', gender: 'female' as const },
+  { name: 'Xavier', gender: 'male' as const },
+  { name: 'Yara', gender: 'female' as const },
+  { name: 'Zack', gender: 'male' as const },
+  { name: 'Ava', gender: 'female' as const },
+  { name: 'Ben', gender: 'male' as const },
+  { name: 'Chloe', gender: 'female' as const },
+  { name: 'Daniel', gender: 'male' as const },
+  { name: 'Emma', gender: 'female' as const },
+  { name: 'Finn', gender: 'male' as const },
+  { name: 'Georgia', gender: 'female' as const },
+  { name: 'Harper', gender: 'male' as const },
+  { name: 'Isla', gender: 'female' as const },
+  { name: 'James', gender: 'male' as const },
+  { name: 'Luna', gender: 'female' as const },
+  { name: 'Mason', gender: 'male' as const },
+  { name: 'Nora', gender: 'female' as const },
+  { name: 'Oliver', gender: 'male' as const },
+  { name: 'Penelope', gender: 'female' as const },
+  { name: 'Lucas', gender: 'male' as const },
+  { name: 'Ruby', gender: 'female' as const },
+  { name: 'Samuel', gender: 'male' as const },
+  { name: 'Victoria', gender: 'female' as const },
 ];
+
+// Select the number of agents based on configuration
+const selectedAgentCount = Math.min(config.initialAgentCount, agentNames.length);
+if (config.initialAgentCount > agentNames.length) {
+  console.warn(`Warning: initialAgentCount (${config.initialAgentCount}) exceeds available unique names (${agentNames.length}). Using ${agentNames.length} agents.`);
+}
 
 // Find suitable starting locations (grass or forest terrain, not water)
 function findSuitableLocation(map: any[][], preferredTerrain: string[] = ['grass', 'forest']) {
@@ -48,7 +91,7 @@ function findSuitableLocation(map: any[][], preferredTerrain: string[] = ['grass
 }
 
 // Create agents at random suitable locations
-const agents: Agent[] = agentNames.map((info, index) => {
+const agents: Agent[] = agentNames.slice(0, selectedAgentCount).map((info, index) => {
   const location = findSuitableLocation(map);
   const isAdult = random.randomBoolean(0.7); // 70% chance of being adult
 
