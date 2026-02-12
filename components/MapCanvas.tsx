@@ -65,15 +65,37 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
     const tileX = Math.floor((x - offset.x) / scale);
     const tileY = Math.floor((y - offset.y) / scale);
 
-    // Check if clicked on agent
-    const clickedAgent = world.agents.find(
+    // Calculate position within the tile
+    const tilePixelX = x - (tileX * scale + offset.x);
+    const tilePixelY = y - (tileY * scale + offset.y);
+
+    // Normalize to 0-1 range within the tile
+    const normalizedX = tilePixelX / scale;
+    const normalizedY = tilePixelY / scale;
+
+    // Determine which quadrant was clicked (0-3)
+    let clickedQuadrant = -1;
+    if (normalizedX < 0.5 && normalizedY < 0.5) clickedQuadrant = 0; // top-left
+    else if (normalizedX >= 0.5 && normalizedY < 0.5) clickedQuadrant = 1; // top-right
+    else if (normalizedX < 0.5 && normalizedY >= 0.5) clickedQuadrant = 2; // bottom-left
+    else if (normalizedX >= 0.5 && normalizedY >= 0.5) clickedQuadrant = 3; // bottom-right
+
+    // Get agents on this tile
+    const agentsOnTile = world.agents.filter(
       a => a.location.x === tileX && a.location.y === tileY && a.alive
     );
 
-    if (clickedAgent) {
+    if (agentsOnTile.length > 0 && clickedQuadrant >= 0 && clickedQuadrant < agentsOnTile.length) {
+      // Clicked on an agent quadrant - select that agent
+      const clickedAgent = agentsOnTile[clickedQuadrant];
       onAgentClick(clickedAgent.id);
-    } else {
+    } else if (clickedQuadrant < 0 || clickedQuadrant >= Math.min(agentsOnTile.length, 4)) {
+      // Clicked on empty space or outside agent quadrants - show tile info
       onTileClick(tileX, tileY);
+    } else {
+      // Clicked on an agent quadrant
+      const clickedAgent = agentsOnTile[clickedQuadrant];
+      onAgentClick(clickedAgent.id);
     }
   };
 
@@ -215,43 +237,85 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
       ctx.strokeRect(screenX + scale * 0.3, screenY + scale * 0.3, scale * 0.4, scale * 0.4);
     }
 
-    // Draw agents
+    // Group agents by tile position
+    const agentsByTile = new Map<string, Agent[]>();
     for (const agent of world.agents) {
       if (!agent.alive) continue;
+      const key = `${agent.location.x},${agent.location.y}`;
+      if (!agentsByTile.has(key)) {
+        agentsByTile.set(key, []);
+      }
+      agentsByTile.get(key)!.push(agent);
+    }
 
-      const screenX = agent.location.x * scale + offset.x;
-      const screenY = agent.location.y * scale + offset.y;
+    // Draw agents
+    for (const [tileKey, agents] of agentsByTile) {
+      const [tileX, tileY] = tileKey.split(',').map(Number);
+      const screenX = tileX * scale + offset.x;
+      const screenY = tileY * scale + offset.y;
 
       // Skip if off screen
       if (screenX < -scale || screenX > canvas.width || screenY < -scale || screenY > canvas.height) {
         continue;
       }
 
-      // Draw agent as a smaller colored square by gender (centered)
-      const agentSize = scale * 0.6;
-      const agentOffset = (scale - agentSize) / 2;
-      ctx.fillStyle = agent.gender === 'male' ? '#4FC3F7' : '#F06292';
-      ctx.fillRect(screenX + agentOffset, screenY + agentOffset, agentSize, agentSize);
+      // Limit to 4 agents per tile
+      const displayAgents = agents.slice(0, 4);
+      const agentCount = displayAgents.length;
 
-      // Draw selection highlight
-      if (agent.id === selectedAgentId) {
-        ctx.strokeStyle = '#FFD700';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(screenX + agentOffset, screenY + agentOffset, agentSize, agentSize);
-      }
+      // Agent size based on count (larger when fewer agents)
+      const agentSize = scale * 0.4; // Fixed size for quadrants
 
-      // Draw status indicators (starving, pregnancy)
-      if (agent.starving) {
-        ctx.fillStyle = '#EF5350';
-        ctx.beginPath();
-        ctx.arc(screenX + scale * 0.2, screenY + scale * 0.8, scale * 0.15, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      if (agent.pregnancy) {
-        ctx.fillStyle = '#BA68C8';
-        ctx.beginPath();
-        ctx.arc(screenX + scale * 0.5, screenY + scale * 0.8, scale * 0.15, 0, Math.PI * 2);
-        ctx.fill();
+      // Quadrant positions: top-left, top-right, bottom-left, bottom-right
+      const quadrants = [
+        { x: screenX + scale * 0.05, y: screenY + scale * 0.05 },  // top-left
+        { x: screenX + scale * 0.55, y: screenY + scale * 0.05 },  // top-right
+        { x: screenX + scale * 0.05, y: screenY + scale * 0.55 },  // bottom-left
+        { x: screenX + scale * 0.55, y: screenY + scale * 0.55 },  // bottom-right
+      ];
+
+      displayAgents.forEach((agent, index) => {
+        const position = quadrants[index];
+        const x = position.x;
+        const y = position.y;
+
+        // Draw agent as a colored square by gender
+        ctx.fillStyle = agent.gender === 'male' ? '#4FC3F7' : '#F06292';
+        ctx.fillRect(x, y, agentSize, agentSize);
+
+        // Draw selection highlight
+        if (agent.id === selectedAgentId) {
+          ctx.strokeStyle = '#FFD700';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x, y, agentSize, agentSize);
+        }
+
+        // Draw status indicators (starving, pregnancy)
+        if (agent.starving) {
+          ctx.fillStyle = '#EF5350';
+          ctx.beginPath();
+          ctx.arc(x + agentSize * 0.3, y + agentSize * 0.8, agentSize * 0.25, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (agent.pregnancy) {
+          ctx.fillStyle = '#BA68C8';
+          ctx.beginPath();
+          ctx.arc(x + agentSize * 0.7, y + agentSize * 0.8, agentSize * 0.25, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      // Draw overflow indicator if more than 4 agents
+      if (agents.length > 4) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.font = `${Math.max(10, scale * 0.3)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(
+          `+${agents.length - 4}`,
+          screenX + scale * 0.5,
+          screenY + scale * 0.5
+        );
       }
     }
 
@@ -387,13 +451,26 @@ export default function MapCanvas({ world, selectedAgentId, onAgentClick, onTile
 
       {/* Hover tooltip for agent or tile */}
       {hoveredTile && (
-        <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded text-sm">
+        <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded text-sm max-w-xs">
           {(() => {
-            const agent = world.agents.find(
+            const agentsOnTile = world.agents.filter(
               a => a.location.x === hoveredTile.x && a.location.y === hoveredTile.y && a.alive
             );
-            if (agent) {
-              return <div>👤 {agent.name} ({agent.gender})</div>;
+            if (agentsOnTile.length > 0) {
+              return (
+                <div>
+                  <div className="font-bold mb-2">Agents ({agentsOnTile.length})</div>
+                  {agentsOnTile.map(agent => (
+                    <div key={agent.id} className="flex items-center gap-2 mb-1">
+                      <span>{agent.gender === 'male' ? '👨' : '👩'}</span>
+                      <span>{agent.name}</span>
+                      <span className="text-gray-400">({agent.age} ticks)</span>
+                      {agent.starving && <span className="text-red-400">⚠️</span>}
+                      {agent.pregnancy && <span className="text-purple-400">🤰</span>}
+                    </div>
+                  ))}
+                </div>
+              );
             }
             const tile = world.map[hoveredTile.y]?.[hoveredTile.x];
             if (!tile) return null;
