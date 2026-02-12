@@ -4,6 +4,7 @@
 // Research-grade, fully documented
 
 import { Agent, World } from './types';
+import OpenAI from 'openai';
 import fs from 'fs';
 
 export interface LLMConfig {
@@ -22,6 +23,10 @@ export interface LLMToolCall {
 export interface LLMResponse {
   toolCalls: LLMToolCall[];
   raw: any;
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
+  latency?: number;
 }
 
 /**
@@ -29,9 +34,29 @@ export interface LLMResponse {
  */
 export class LLMClient {
   private config: LLMConfig;
+  private client: OpenAI;
+  private maxRetries = 1; // Reduced from 3 for faster fallback
 
   constructor(config: LLMConfig) {
     this.config = config;
+
+    // Parse base URL from endpoint - endpoint should always be without /chat/completions
+    let baseUrl = config.endpoint;
+    // Remove /chat/completions if present
+    if (baseUrl.endsWith('/chat/completions')) {
+      baseUrl = baseUrl.slice(0, -'/chat/completions'.length);
+    }
+    // Ensure we have the /v1 prefix
+    if (!baseUrl.endsWith('/v1') && !baseUrl.includes('/v1/')) {
+      baseUrl = baseUrl + (baseUrl.endsWith('/') ? 'v1' : '/v1');
+    }
+
+    this.client = new OpenAI({
+      apiKey: config.apiKey,
+      baseURL: baseUrl,
+      timeout: 10000, // 10 second timeout for faster failure
+      maxRetries: 1, // Override SDK default retries
+    });
   }
 
   /**
@@ -40,90 +65,178 @@ export class LLMClient {
    * @param world The current world state
    * @param toolSchemas The available tool schemas
    */
-  async getToolCalls(agent: Agent, world: World, toolSchemas: any[]): Promise<LLMResponse> {
+  async getToolCalls(
+    agent: Agent,
+    world: World,
+    toolSchemas: any[]
+  ): Promise<LLMResponse> {
+    const startTime = Date.now();
+
+    console.log(`[LLM] Requesting decision for agent ${agent.name} (${agent.id}) at tick ${world.time}`);
+
+    // Prune memory to last 20 entries to keep context manageable
+    const prunedMemory = agent.memory.slice(-20);
+
     // Compose a concise, context-aware prompt for the LLM
-    const prompt = {
-      agent: {
-        id: agent.id,
-        name: agent.name,
-        gender: agent.gender,
-        age: agent.age,
-        status: agent.status,
-        happiness: agent.happiness,
-        memory: agent.memory,
-        relationships: agent.relationships,
-        inventory: agent.inventory,
-        mealsEaten: agent.mealsEaten,
-        lastMealTick: agent.lastMealTick,
-        starving: agent.starving,
-        alive: agent.alive,
-        pregnancy: agent.pregnancy,
-        location: agent.location,
-        visibilityRadius: agent.visibilityRadius,
-      },
-      world: {
-        time: world.time,
-        dayNight: world.dayNight,
-        weather: world.weather,
-        // Only include visible map tiles and agents for this agent
-        visibleTiles: world.map
-          .flat()
-          .filter(tile =>
-            Math.abs(tile.x - agent.location.x) <= agent.visibilityRadius &&
-            Math.abs(tile.y - agent.location.y) <= agent.visibilityRadius
-          ),
-        visibleAgents: world.agents.filter(a =>
-          a.id !== agent.id &&
-          Math.abs(a.location.x - agent.location.x) <= agent.visibilityRadius &&
-          Math.abs(a.location.y - agent.location.y) <= agent.visibilityRadius
-        ),
-        inventory: agent.inventory,
-      },
-      toolSchemas,
-      instructions: 'You are an agent in a research simulation. Choose ONE action for this tick using the provided tool schemas. Respond ONLY with a JSON array of tool calls.'
+    const visibleTiles = world.map
+      .flat()
+      .filter(tile =>
+        Math.abs(tile.x - agent.location.x) <= agent.visibilityRadius &&
+        Math.abs(tile.y - agent.location.y) <= agent.visibilityRadius
+      );
+
+    const visibleAgents = world.agents.filter(a =>
+      a.id !== agent.id &&
+      a.alive &&
+      Math.abs(a.location.x - agent.location.x) <= agent.visibilityRadius &&
+      Math.abs(a.location.y - agent.location.y) <= agent.visibilityRadius
+    );
+
+    // Build agent state summary
+    const agentState = {
+      id: agent.id,
+      name: agent.name,
+      gender: agent.gender,
+      age: agent.age,
+      ageInDays: Math.floor(agent.age / 24),
+      status: agent.status,
+      happiness: agent.happiness,
+      inventory: agent.inventory,
+      mealsEaten: agent.mealsEaten,
+      starving: agent.starving,
+      pregnant: !!agent.pregnancy,
+      location: agent.location,
+      recentMemory: prunedMemory.map(m => ({
+        tick: m.tick,
+        description: m.description
+      })),
+      relationships: agent.relationships.slice(0, 10), // Limit to 10 most important
     };
 
-    // Log prompt for auditability
-    this.logLLMInteraction('prompt', agent.id, prompt);
+    // Build world state summary
+    const worldState = {
+      time: world.time,
+      hour: world.time % 24,
+      day: Math.floor(world.time / 24),
+      dayNight: world.dayNight,
+      weather: world.weather,
+      visibleTiles: visibleTiles.map(t => ({
+        x: t.x,
+        y: t.y,
+        terrain: t.terrain,
+        resources: t.resources,
+        hasCropField: !!t.cropField,
+        hasStructure: !!t.structure,
+      })),
+      visibleAgents: visibleAgents.map(a => ({
+        id: a.id,
+        name: a.name,
+        location: a.location,
+        status: a.status,
+      })),
+    };
 
-    // Send HTTP request to LLM endpoint
-    let response: any = null;
-    try {
-      const res = await fetch(this.config.endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.config.apiKey}`,
-        },
-        body: JSON.stringify({
+    const systemPrompt = this.buildSystemPrompt(agent.status);
+    const userPrompt = JSON.stringify({ agent: agentState, world: worldState });
+
+    // Attempt with retry logic
+    let lastError: Error | null = null;
+    for (let attempt = 0; attempt < this.maxRetries; attempt++) {
+      try {
+        const response = await this.client.chat.completions.create({
           model: this.config.model,
-          temperature: this.config.temperature ?? 0.2,
+          temperature: this.config.temperature ?? 0.3,
           max_tokens: this.config.maxTokens ?? 256,
           messages: [
-            { role: 'system', content: 'You are an agent in a research simulation. Use tool-calling to act.' },
-            { role: 'user', content: JSON.stringify(prompt) }
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
           ],
           tools: toolSchemas,
-        }),
-      });
-      response = await res.json();
-    } catch (err) {
-      this.logLLMInteraction('error', agent.id, { error: err });
-      return { toolCalls: [], raw: null };
+        });
+
+        const latency = Date.now() - startTime;
+        const toolCalls: LLMToolCall[] = [];
+
+        console.log(`[LLM] Response received:`, JSON.stringify({
+          hasToolCalls: !!response.choices[0]?.message?.tool_calls,
+          toolCallsCount: response.choices[0]?.message?.tool_calls?.length || 0,
+          usage: response.usage,
+        }));
+
+        if (response.choices[0]?.message?.tool_calls) {
+          for (const call of response.choices[0].message.tool_calls) {
+            // OpenAI SDK tool_call structure - use type assertion for function property
+            const toolCall = call as unknown as { function: { name: string; arguments: string } };
+            if (toolCall.function) {
+              toolCalls.push({
+                name: toolCall.function.name,
+                arguments: JSON.parse(toolCall.function.arguments),
+              });
+            }
+          }
+        }
+
+        console.log(`[LLM] Parsed ${toolCalls.length} tool calls:`, toolCalls);
+
+        return {
+          toolCalls,
+          raw: response,
+          promptTokens: response.usage?.prompt_tokens,
+          completionTokens: response.usage?.completion_tokens,
+          totalTokens: response.usage?.total_tokens,
+          latency,
+        };
+      } catch (error: any) {
+        lastError = error;
+        // Exponential backoff
+        if (attempt < this.maxRetries - 1) {
+          const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
     }
 
-    // Log response for auditability
-    this.logLLMInteraction('response', agent.id, response);
+    // All retries failed
+    this.logLLMInteraction('error', agent.id, {
+      error: lastError?.message || 'Unknown error',
+      attempts: this.maxRetries,
+    });
 
-    // Parse tool calls from response (OpenAI function calling format)
-    let toolCalls: LLMToolCall[] = [];
-    if (response && response.choices && response.choices[0]?.message?.tool_calls) {
-      toolCalls = response.choices[0].message.tool_calls.map((call: any) => ({
-        name: call.function.name,
-        arguments: call.function.arguments,
-      }));
+    return { toolCalls: [], raw: null };
+  }
+
+  /**
+   * Build system prompt based on agent status
+   */
+  private buildSystemPrompt(status: string): string {
+    const basePrompt = `You are an AI agent in a research-focused island survival simulation.
+
+Your goal is to survive and potentially thrive by:
+- Gathering resources (wood, stone, water, food)
+- Crafting tools and building structures
+- Communicating and cooperating with other agents
+- Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
+
+You can perform ONE action per tick (hour).
+
+CRITICAL RULES:
+1. You can ONLY interact with entities within your visibility radius
+2. You cannot move into water tiles
+3. Starvation is fatal - eat food regularly
+4. Your actions are logged and may affect relationships with other agents
+5. Choose the most sensible action given your current state and surroundings
+
+Respond with ONLY a single tool call representing your chosen action.`;
+
+    if (status === 'child') {
+      return basePrompt + `\n\nAs a CHILD, you can only:
+- Move to explore
+- Communicate with nearby agents
+
+You must grow up before you can gather, craft, build, or procreate.`;
     }
-    return { toolCalls, raw: response };
+
+    return basePrompt;
   }
 
   private logLLMInteraction(type: string, agentId: string, data: any) {

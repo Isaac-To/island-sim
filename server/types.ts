@@ -92,7 +92,11 @@ export type EventType =
   | 'birth'
   | 'death'
   | 'resource_drop'
-  | 'god_message';
+  | 'god_message'
+  | 'llm_query'
+  | 'llm_response'
+  | 'llm_error'
+  | 'llm_fallback';
 
 /**
  * Event log entry

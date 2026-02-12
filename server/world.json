@@ -1646,18 +1646,7 @@
         "y": 11,
         "elevation": 0.3863776390070517,
         "terrain": "grass",
-        "resources": {},
-        "cropField": {
-          "id": "crop_8_11_0",
-          "location": {
-            "x": 8,
-            "y": 11
-          },
-          "plantedTick": 0,
-          "watered": 4,
-          "matureTick": 72,
-          "harvested": false
-        }
+        "resources": {}
       },
       {
         "x": 9,
@@ -2251,18 +2240,7 @@
         "y": 15,
         "elevation": 0.3432525865136164,
         "terrain": "grass",
-        "resources": {},
-        "cropField": {
-          "id": "crop_10_15_0",
-          "location": {
-            "x": 10,
-            "y": 15
-          },
-          "plantedTick": 0,
-          "watered": 4,
-          "matureTick": 72,
-          "harvested": false
-        }
+        "resources": {}
       },
       {
         "x": 11,
@@ -2904,7 +2882,7 @@
       "id": "agent_001",
       "name": "Alice",
       "gender": "female",
-      "age": 1313,
+      "age": 1264,
       "status": "adult",
       "happiness": 99,
       "memory": [],
@@ -2913,12 +2891,12 @@
         "wood": 4,
         "stone": 0,
         "water": 2,
-        "food": 0,
+        "food": 17,
         "tools": 1
       },
       "mealsEaten": 0,
-      "lastMealTick": 17,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 8,
@@ -2930,7 +2908,7 @@
       "id": "agent_002",
       "name": "Bob",
       "gender": "male",
-      "age": 1294,
+      "age": 1245,
       "status": "adult",
       "happiness": 74,
       "memory": [],
@@ -2939,12 +2917,12 @@
         "wood": 2,
         "stone": 0,
         "water": 0,
-        "food": 0,
+        "food": 14,
         "tools": 1
       },
       "mealsEaten": 0,
-      "lastMealTick": 14,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 10,
@@ -2956,7 +2934,7 @@
       "id": "agent_003",
       "name": "Carol",
       "gender": "female",
-      "age": 128,
+      "age": 79,
       "status": "child",
       "happiness": 75,
       "memory": [],
@@ -2965,12 +2943,12 @@
         "wood": 0,
         "stone": 1,
         "water": 2,
-        "food": 0,
+        "food": 17,
         "tools": 1
       },
       "mealsEaten": 0,
-      "lastMealTick": 17,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 15,
@@ -2982,7 +2960,7 @@
       "id": "agent_004",
       "name": "David",
       "gender": "male",
-      "age": 1323,
+      "age": 1274,
       "status": "adult",
       "happiness": 92,
       "memory": [],
@@ -2991,12 +2969,12 @@
         "wood": 0,
         "stone": 2,
         "water": 1,
-        "food": 0,
+        "food": 17,
         "tools": 0
       },
       "mealsEaten": 0,
-      "lastMealTick": 17,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 13,
@@ -3008,7 +2986,7 @@
       "id": "agent_005",
       "name": "Eve",
       "gender": "female",
-      "age": 115,
+      "age": 66,
       "status": "child",
       "happiness": 79,
       "memory": [],
@@ -3017,12 +2995,12 @@
         "wood": 2,
         "stone": 0,
         "water": 0,
-        "food": 0,
+        "food": 17,
         "tools": 0
       },
       "mealsEaten": 0,
-      "lastMealTick": 17,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 7,
@@ -3034,7 +3012,7 @@
       "id": "agent_006",
       "name": "Frank",
       "gender": "male",
-      "age": 1074,
+      "age": 1025,
       "status": "adult",
       "happiness": 88,
       "memory": [],
@@ -3043,12 +3021,12 @@
         "wood": 4,
         "stone": 0,
         "water": 3,
-        "food": 0,
+        "food": 17,
         "tools": 1
       },
       "mealsEaten": 0,
-      "lastMealTick": 17,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 13,
@@ -3060,7 +3038,7 @@
       "id": "agent_007",
       "name": "Grace",
       "gender": "female",
-      "age": 1526,
+      "age": 1477,
       "status": "adult",
       "happiness": 97,
       "memory": [],
@@ -3069,12 +3047,12 @@
         "wood": 3,
         "stone": 2,
         "water": 3,
-        "food": 0,
+        "food": 19,
         "tools": 1
       },
       "mealsEaten": 0,
-      "lastMealTick": 19,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 15,
@@ -3086,7 +3064,7 @@
       "id": "agent_008",
       "name": "Henry",
       "gender": "male",
-      "age": 129,
+      "age": 80,
       "status": "child",
       "happiness": 96,
       "memory": [],
@@ -3095,12 +3073,12 @@
         "wood": 2,
         "stone": 2,
         "water": 2,
-        "food": 0,
+        "food": 11,
         "tools": 0
       },
       "mealsEaten": 0,
-      "lastMealTick": 11,
-      "starving": true,
+      "lastMealTick": 0,
+      "starving": false,
       "alive": true,
       "location": {
         "x": 5,
@@ -3110,7 +3088,7 @@
     }
   ],
   "droppedItems": [],
-  "weather": "sun",
-  "time": 50,
-  "dayNight": "night"
+  "weather": "rain",
+  "time": 0,
+  "dayNight": "day"
 }

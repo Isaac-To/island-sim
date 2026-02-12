@@ -90,12 +90,46 @@ console.log('Creating simulation...');
 const sim = new Simulation(config, initialWorld);
 
 console.log('Running simulation for 50 ticks to generate initial event history...');
-for (let i = 0; i < 50; i++) {
-  sim.tick();
-  if (i % 10 === 0) {
-    console.log(`  Tick ${i}/50 completed`);
+
+// Use async IIFE to handle async tick()
+(async () => {
+  for (let i = 0; i < 50; i++) {
+    await sim.tick();
+    if (i % 10 === 0) {
+      console.log(`  Tick ${i}/50 completed`);
+    }
   }
-}
+
+  console.log('Simulation completed. Writing output files...');
+
+  // Write outputs
+  const outputDir = join(process.cwd(), 'server');
+
+  try {
+    writeFileSync(
+      join(outputDir, 'world.json'),
+      JSON.stringify(sim.world, null, 2)
+    );
+    console.log('✓ Written server/world.json');
+
+    writeFileSync(
+      join(outputDir, 'eventlog.json'),
+      JSON.stringify(sim.eventLog, null, 2)
+    );
+    console.log('✓ Written server/eventlog.json');
+
+    console.log('\nDemo data generation complete!');
+    console.log(`  - World size: ${config.mapSize}x${config.mapSize}`);
+    console.log(`  - Agents: ${sim.world.agents.filter(a => a.alive).length} alive, ${sim.world.agents.length} total`);
+    console.log(`  - Events logged: ${sim.eventLog.length}`);
+    console.log(`  - Current tick: ${sim.world.time}`);
+    console.log(`  - Weather: ${sim.world.weather}`);
+    console.log(`  - Day/Night: ${sim.world.dayNight}`);
+  } catch (error) {
+    console.error('Error writing files:', error);
+    process.exit(1);
+  }
+})();
 
 console.log('Simulation completed. Writing output files...');
 
