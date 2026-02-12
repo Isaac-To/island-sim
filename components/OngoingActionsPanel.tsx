@@ -53,7 +53,8 @@ export default function OngoingActionsPanel({ events, currentTick, world }: Ongo
     }
   };
 
-  const getAgentName = (agentId: string) => {
+  const getAgentName = (agentId: string | undefined) => {
+    if (!agentId) return 'Unknown';
     const agent = world.agents.find(a => a.id === agentId);
     return agent?.name || agentId.slice(0, 8);
   };
