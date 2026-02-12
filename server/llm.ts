@@ -4,6 +4,7 @@
 // Research-grade, fully documented
 
 import { Agent, World } from './types';
+import { getPersonalityDescription } from './agent';
 import OpenAI from 'openai';
 import fs from 'fs';
 
@@ -101,16 +102,61 @@ export class LLMClient {
       ageInDays: Math.floor(agent.age / 24),
       status: agent.status,
       happiness: agent.happiness,
+      personality: {
+        traits: agent.personality,
+        description: getPersonalityDescription(agent.personality),
+      },
       inventory: agent.inventory,
       mealsEaten: agent.mealsEaten,
       starving: agent.starving,
       pregnant: !!agent.pregnancy,
       location: agent.location,
-      recentMemory: prunedMemory.map(m => ({
-        tick: m.tick,
-        description: m.description
+      recentMemory: prunedMemory.map(m => {
+        // Truncate long memory descriptions to keep context manageable
+        const desc = m.description || '';
+        const truncatedDesc = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
+        return {
+          tick: m.tick,
+          description: truncatedDesc,
+          category: m.category || 'other',
+          importance: m.importance || 5,
+        };
+      }),
+      relationships: agent.relationships.slice(0, 10).map(r => ({
+        agentId: r.agentId,
+        type: r.type,
+        value: r.value,
+        notes: r.notes || 'No notes',
       })),
-      relationships: agent.relationships.slice(0, 10), // Limit to 10 most important
+      conversationHistory: Object.entries(agent.conversationHistory)
+        .map(([otherId, history]) => {
+          const otherAgent = world.agents.find(a => a.id === otherId);
+          const otherName = otherId === 'GOD' ? 'GOD' : (otherAgent?.name || otherId);
+          // Sort messages by tick (most recent first) and take last 5
+          const sortedMessages = [...history.messages].sort((a, b) => b.tick - a.tick).slice(0, 5);
+          return {
+            withAgent: otherName,
+            withAgentId: otherId,
+            recentMessages: sortedMessages.map(m => {
+              // Truncate long messages to keep context manageable
+              const msg = m.message || '';
+              const truncatedMsg = msg.length > 100 ? msg.substring(0, 100) + '...' : msg;
+              return {
+                tick: m.tick,
+                sender: m.senderName,
+                message: truncatedMsg,
+                ticksAgo: world.time - m.tick,
+              };
+            }),
+          };
+        })
+        .filter(h => h.recentMessages.length > 0)
+        .sort((a, b) => {
+          // Sort by most recent interaction (lowest ticksAgo)
+          const aRecent = Math.min(...a.recentMessages.map(m => m.ticksAgo));
+          const bRecent = Math.min(...b.recentMessages.map(m => m.ticksAgo));
+          return aRecent - bRecent;
+        }),
     };
 
     // Build world state summary
@@ -234,29 +280,52 @@ export class LLMClient {
   private buildSystemPrompt(status: string): string {
     const basePrompt = `You are an AI agent in a research-focused island survival simulation.
 
-  Your goal is to survive and potentially thrive by:
-  - Gathering resources (wood, stone, water, food)
-  - Crafting tools and building structures
-  - Communicating and cooperating with other agents
-  - Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
+Your goal is to survive and potentially thrive by:
+- Gathering resources (wood, stone, water, food)
+- Crafting tools and building structures
+- Communicating and cooperating with other agents
+- Managing your hunger (eat ${this.config.maxTokens ? 'regularly' : '3 meals per day'})
 
-  Simulation Rules & Mechanics:
-  - Tools are crafted from resources (wood, stone, metal) and are required for specific tasks (e.g., axes for chopping, hoes for farming).
-  - To make tools, collect the necessary materials and use a crafting action, which consumes resources and produces the tool.
-  - Tools have durability and may break after repeated use, requiring crafting replacements.
-  - Crop fields are built using tools (like hoes) and resources (such as seeds and soil). Building a crop field enables planting and harvesting crops for food.
-  - Actions depend on agent stats, tool availability, and environmental conditions.
-  - Tools unlock new actions (building, farming, mining), enabling agents to create advanced structures and sustain themselves.
-  - Relationships, memories, and personalities influence agent decisions and interactions, but resource management, tool crafting, and building are core mechanics.
+Simulation Rules & Mechanics:
+- Tools are crafted from resources (wood, stone, metal) and are required for specific tasks (e.g., axes for chopping, hoes for farming).
+- To make tools, collect the necessary materials and use a crafting action, which consumes resources and produces the tool.
+- Tools have durability and may break after repeated use, requiring crafting replacements.
+- Crop fields are built using tools (like hoes) and resources (such as seeds and soil). Building a crop field enables planting and harvesting crops for food.
+- Actions depend on agent stats, tool availability, and environmental conditions.
+- Tools unlock new actions (building, farming, mining), enabling agents to create advanced structures and sustain themselves.
+- Relationships, memories, and personalities influence agent decisions and interactions, but resource management, tool crafting, and building are core mechanics.
 
-  CRITICAL RULES:
-  1. You can ONLY interact with entities within your visibility radius
-  2. You cannot move into water tiles
-  3. Starvation is fatal - eat food regularly
-  4. Your actions are logged and may affect relationships with other agents
-  5. Choose the most sensible action given your current state and surroundings
+PERSONALITY & MEMORY:
+- You have a unique personality that influences your behavior and decisions.
+- Pay attention to your personality traits and act according to them.
+- Your relationships with other agents matter - nurture positive relationships and be mindful of rivalries.
+- Your memories inform your decisions - learn from past experiences.
 
-  Respond with ONLY a single tool call representing your chosen action.`;
+CONVERSATION GUIDELINES (CRITICAL):
+- ALWAYS read your conversation history before communicating
+- When someone asks you a question, ANSWER it in your next message
+- When someone shares information, ACKNOWLEDGE it
+- Build on what others have said - don't repeat yourself
+- Be contextual and responsive in conversations
+- Avoid sending the same message multiple times
+- If you have nothing new to say, focus on other actions (gather, move, etc.)
+
+CONVERSATION CONTEXT:
+- You can see your conversation history with other agents
+- Use this context to inform your communications and build meaningful relationships
+- Reference past conversations when appropriate
+- Remember what others have told you and what you've discussed
+
+You can perform ONE action per tick (hour).
+
+CRITICAL RULES:
+1. You can ONLY interact with entities within your visibility radius
+2. You cannot move into water tiles
+3. Starvation is fatal - eat food regularly
+4. Your actions are logged and may affect relationships with other agents
+5. Choose the most sensible action given your current state and surroundings
+
+Respond with ONLY a single tool call representing your chosen action.`;
 
     if (status === 'child') {
       return basePrompt + `\n\nAs a CHILD, you can only:

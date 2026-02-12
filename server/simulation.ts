@@ -84,12 +84,36 @@ export class Simulation {
     const recipients = targetAgentIds.length > 0
       ? this.world.agents.filter((a: Agent) => targetAgentIds.includes(a.id) && a.alive)
       : this.world.agents.filter((a: Agent) => a.alive);
+    
+    // Create chat message for conversation history
+    const godChatMessage = {
+      tick: this.world.time,
+      senderId: 'GOD' as const,
+      senderName: 'GOD',
+      message: message,
+      participants: ['GOD', ...recipients.map(a => a.id)],
+    };
+    
     for (const agent of recipients) {
+      // Add to memory
       agent.memory.push({
         tick: this.world.time,
         eventId: this.generateEventId('godmsg'),
         description: `[GOD] ${message}`,
+        category: 'god',
+        importance: 8,
+        participants: ['GOD'],
       });
+      
+      // Add to conversation history with GOD
+      const godHistory = agent.conversationHistory['GOD'] || { messages: [], lastUpdated: 0 };
+      agent.conversationHistory = {
+        ...agent.conversationHistory,
+        'GOD': {
+          messages: [...godHistory.messages, godChatMessage],
+          lastUpdated: this.world.time,
+        },
+      };
     }
     this.logEvent({
       id: this.generateEventId('event'),
@@ -267,6 +291,13 @@ export class Simulation {
           age: 0,
           status: 'child' as const,
           happiness: 100,
+          personality: {
+            openness: Math.floor(this.random.random() * 100),
+            conscientiousness: Math.floor(this.random.random() * 100),
+            extraversion: Math.floor(this.random.random() * 100),
+            agreeableness: Math.floor(this.random.random() * 100),
+            neuroticism: Math.floor(this.random.random() * 100),
+          },
           memory: [],
           relationships: [],
           inventory: { wood: 0, stone: 0, water: 0, food: 0, tools: 0 },
@@ -276,6 +307,7 @@ export class Simulation {
           alive: true,
           location: { ...agentAfterProcreate.location },
           visibilityRadius: agentAfterProcreate.visibilityRadius,
+          conversationHistory: {},
         };
         newWorld.agents.push(child);
         this.logEvent({

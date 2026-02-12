@@ -38,7 +38,13 @@ export interface Relationship {
   agentId: ID;
   type: RelationshipType;
   value: number; // e.g., trust level
+  notes?: string; // Textual description of the relationship
 }
+
+/**
+ * Memory category for better organization
+ */
+export type MemoryCategory = 'interaction' | 'resource' | 'survival' | 'birth' | 'death' | 'god' | 'other';
 
 /**
  * Agent memory entry
@@ -47,6 +53,39 @@ export interface MemoryEntry {
   tick: number;
   eventId: ID;
   description: string;
+  category?: MemoryCategory;
+  importance?: number; // 0-10 scale for memory importance
+  participants?: ID[]; // Other agents involved in this memory (for conversations)
+}
+
+/**
+ * Chat message in conversation history
+ */
+export interface ChatMessage {
+  tick: number;
+  senderId: ID;
+  senderName: string;
+  message: string;
+  participants: ID[]; // All agents who received this message
+}
+
+/**
+ * Conversation history between agents
+ */
+export interface ConversationHistory {
+  messages: ChatMessage[];
+  lastUpdated: number; // tick of last message
+}
+
+/**
+ * Personality trait values (0-100 scale)
+ */
+export interface Personality {
+  openness: number; // Willingness to try new things
+  conscientiousness: number; // Organization, reliability
+  extraversion: number; // Sociability, assertiveness
+  agreeableness: number; // Cooperation, compassion
+  neuroticism: number; // Emotional stability (high = more anxious)
 }
 
 /**
@@ -59,6 +98,7 @@ export interface Agent {
   age: number; // in ticks
   status: AgentStatus;
   happiness: number;
+  personality: Personality;
   memory: MemoryEntry[];
   relationships: Relationship[];
   inventory: Inventory;
@@ -73,6 +113,7 @@ export interface Agent {
   };
   location: { x: number; y: number };
   visibilityRadius: number;
+  conversationHistory: Record<ID, ConversationHistory>; // Chat history with each agent
 }
 
 /**

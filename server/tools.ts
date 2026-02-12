@@ -72,11 +72,11 @@ export function handleGiveResource(world: World, call: GiveResourceToolCall): Wo
   // Update happiness and relationships
   const newAgents = world.agents.map(agent => {
     if (agent.id === from.id) {
-      let updated = updateRelationshipEvent(agent, to.id, 'give');
+      let updated = updateRelationshipEvent(agent, to.id, to.name, 'give');
       updated = updateHappinessEvent(updated, 'give');
       return updated;
     } else if (agent.id === to.id) {
-      let updated = updateRelationshipEvent(agent, from.id, 'give');
+      let updated = updateRelationshipEvent(agent, from.id, from.name, 'give');
       updated = updateHappinessEvent(updated, 'give');
       return updated;
     }
@@ -195,7 +195,7 @@ export function handleMove(world: World, call: MoveToolCall): World {
 /**
  * Handle a communicate (proximity chat) action
  * Only allows communication with agents within visibility radius
- * Updates memory and relationships
+ * Updates memory, relationships, and conversation history
  */
 export function handleCommunicate(world: World, call: CommunicateToolCall): World {
   const sender = world.agents.find(a => a.id === call.agentId);
@@ -208,13 +208,36 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
     Math.abs(a.location.x - sender.location.x) <= sender.visibilityRadius &&
     Math.abs(a.location.y - sender.location.y) <= sender.visibilityRadius
   );
-  // Update memory for sender and recipients
+  
+  // Create chat message for conversation history
+  const chatMessage = {
+    tick: world.time,
+    senderId: sender.id,
+    senderName: sender.name,
+    message: call.message,
+    participants: [sender.id, ...validRecipients.map(r => r.id)],
+  };
+  
+  // Update memory and conversation history for sender and recipients
   const newAgents = world.agents.map(agent => {
     if (agent.id === sender.id) {
-      // Sender: update memory, happiness, relationship to each recipient
+      // Sender: update memory, happiness, relationship to each recipient, and conversation history
       let updated = agent;
       for (const rec of validRecipients) {
-        updated = updateRelationshipEvent(updated, rec.id, 'communicate');
+        updated = updateRelationshipEvent(updated, rec.id, rec.name, 'communicate');
+        
+        // Update conversation history with this recipient
+        const recipientHistory = updated.conversationHistory[rec.id] || { messages: [], lastUpdated: 0 };
+        updated = {
+          ...updated,
+          conversationHistory: {
+            ...updated.conversationHistory,
+            [rec.id]: {
+              messages: [...recipientHistory.messages, chatMessage],
+              lastUpdated: world.time,
+            },
+          },
+        };
       }
       updated = updateHappinessEvent(updated, 'communicate');
       return {
@@ -225,13 +248,30 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
             tick: world.time,
             eventId: `chat_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
             description: `[CHAT] ${sender.name}: ${call.message}`,
+            category: 'interaction' as const,
+            importance: 5,
+            participants: validRecipients.map(r => r.id),
           },
         ],
       };
     } else if (validRecipients.some(r => r.id === agent.id)) {
-      // Recipient: update memory, happiness, relationship to sender
-      let updated = updateRelationshipEvent(agent, sender.id, 'communicate');
+      // Recipient: update memory, happiness, relationship to sender, and conversation history
+      let updated = updateRelationshipEvent(agent, sender.id, sender.name, 'communicate');
       updated = updateHappinessEvent(updated, 'communicate');
+      
+      // Update conversation history with sender
+      const senderHistory = updated.conversationHistory[sender.id] || { messages: [], lastUpdated: 0 };
+      updated = {
+        ...updated,
+        conversationHistory: {
+          ...updated.conversationHistory,
+          [sender.id]: {
+            messages: [...senderHistory.messages, chatMessage],
+            lastUpdated: world.time,
+          },
+        },
+      };
+      
       return {
         ...updated,
         memory: [
@@ -240,6 +280,9 @@ export function handleCommunicate(world: World, call: CommunicateToolCall): Worl
             tick: world.time,
             eventId: `chat_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
             description: `[CHAT] ${sender.name}: ${call.message}`,
+            category: 'interaction' as const,
+            importance: 5,
+            participants: [sender.id],
           },
         ],
       };

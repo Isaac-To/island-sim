@@ -46,3 +46,6 @@ next-env.d.ts
 # Generated files
 world*.json
 eventlog.json
+llm_interactions.log
+server/eventlog.json
+server/world.json

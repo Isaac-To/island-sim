@@ -1,0 +1,20 @@
+[
+  {
+    "id": "event_1770879282767_l5llqi",
+    "type": "god_message",
+    "tick": 0,
+    "agentsInvolved": [
+      "agent_001",
+      "agent_002",
+      "agent_003",
+      "agent_004",
+      "agent_005",
+      "agent_006",
+      "agent_007",
+      "agent_008"
+    ],
+    "details": {
+      "message": "Greetings, agents! I am watching over you. Work together and survive!"
+    }
+  }
+]

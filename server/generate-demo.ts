@@ -2,6 +2,7 @@
 import { generateIslandMap } from './worldgen';
 import { Simulation } from './simulation';
 import { Agent, World } from './types';
+import { generatePersonality } from './agent';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { SeededRandom } from '../lib/seededRandom';
@@ -58,6 +59,7 @@ const agents: Agent[] = agentNames.map((info, index) => {
     age: isAdult ? random.randomInt(1000, 1500) : random.randomInt(50, 150), // Adults: 1000-1500 ticks, Children: 50-150 ticks
     status: isAdult ? 'adult' : 'child',
     happiness: random.randomInt(70, 100), // 70-100
+    personality: generatePersonality(() => random.random()),
     memory: [],
     relationships: [],
     inventory: {
@@ -73,6 +75,7 @@ const agents: Agent[] = agentNames.map((info, index) => {
     alive: true,
     location,
     visibilityRadius: config.visibilityRadius,
+    conversationHistory: {},
   };
 });
 
