@@ -84,10 +84,17 @@ export function generateIslandMap(size: number, seed: number): Tile[][] {
         resources.wood = woodAmount;
         resourceLimits.maxWood = woodAmount + 3; // Can regrow up to 3 more
       }
-      if (terrain === 'rocky' && random.randomBoolean(0.15)) {
+      // Stone generation: much higher probability on rocky terrain, some on forest
+      if (terrain === 'rocky') {
+        if (random.randomBoolean(0.5)) {
+          const stoneAmount = 2 + random.randomInt(0, 3);
+          resources.stone = stoneAmount;
+          resourceLimits.maxStone = stoneAmount; // Stone doesn't regrow
+        }
+      } else if (terrain === 'forest' && random.randomBoolean(0.08)) {
         const stoneAmount = 1 + random.randomInt(0, 2);
         resources.stone = stoneAmount;
-        resourceLimits.maxStone = stoneAmount; // Stone doesn't regrow
+        resourceLimits.maxStone = stoneAmount;
       }
       if (terrain === 'beach' && random.randomBoolean(0.05)) {
         resources.food = 1;
