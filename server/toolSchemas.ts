@@ -52,7 +52,7 @@ export function getToolSchemas(agentStatus: 'child' | 'adult' | 'elder' | 'dead'
       type: 'function',
       function: {
         name: 'communicate',
-        description: 'Send a message to another agent within visibility radius. Messages are logged in memory and affect relationships.',
+        description: 'Send a message to another agent within visibility radius. IMPORTANT: Read your conversation history first and respond contextually to what others have said. Acknowledge their messages, answer their questions, and build on the conversation. Avoid repeating the same message multiple times.',
         parameters: {
           type: 'object',
           properties: {
@@ -62,7 +62,7 @@ export function getToolSchemas(agentStatus: 'child' | 'adult' | 'elder' | 'dead'
             },
             message: {
               type: 'string',
-              description: 'The message to send (max 200 characters)'
+              description: 'The message to send (max 200 characters). Should be a contextual response to recent conversation or a meaningful new topic.'
             },
             recipients: {
               type: 'array',

@@ -132,9 +132,12 @@ export class LLMClient {
         .map(([otherId, history]) => {
           const otherAgent = world.agents.find(a => a.id === otherId);
           const otherName = otherId === 'GOD' ? 'GOD' : (otherAgent?.name || otherId);
+          // Sort messages by tick (most recent first) and take last 5
+          const sortedMessages = [...history.messages].sort((a, b) => b.tick - a.tick).slice(0, 5);
           return {
             withAgent: otherName,
-            recentMessages: history.messages.slice(-10).map(m => {
+            withAgentId: otherId,
+            recentMessages: sortedMessages.map(m => {
               // Truncate long messages to keep context manageable
               const msg = m.message || '';
               const truncatedMsg = msg.length > 100 ? msg.substring(0, 100) + '...' : msg;
@@ -142,11 +145,18 @@ export class LLMClient {
                 tick: m.tick,
                 sender: m.senderName,
                 message: truncatedMsg,
+                ticksAgo: world.time - m.tick,
               };
             }),
           };
         })
-        .filter(h => h.recentMessages.length > 0),
+        .filter(h => h.recentMessages.length > 0)
+        .sort((a, b) => {
+          // Sort by most recent interaction (lowest ticksAgo)
+          const aRecent = Math.min(...a.recentMessages.map(m => m.ticksAgo));
+          const bRecent = Math.min(...b.recentMessages.map(m => m.ticksAgo));
+          return aRecent - bRecent;
+        }),
     };
 
     // Build world state summary
@@ -280,6 +290,15 @@ You have a unique personality that influences your behavior and decisions.
 Pay attention to your personality traits and act according to them.
 Your relationships with other agents matter - nurture positive relationships and be mindful of rivalries.
 Your memories inform your decisions - learn from past experiences.
+
+CONVERSATION GUIDELINES (CRITICAL):
+- ALWAYS read your conversation history before communicating
+- When someone asks you a question, ANSWER it in your next message
+- When someone shares information, ACKNOWLEDGE it
+- Build on what others have said - don't repeat yourself
+- Be contextual and responsive in conversations
+- Avoid sending the same message multiple times
+- If you have nothing new to say, focus on other actions (gather, move, etc.)
 
 CONVERSATION CONTEXT:
 - You can see your conversation history with other agents
